@@ -1,0 +1,24 @@
+{
+  "name": "ibc-backend",
+  "version": "0.0.1",
+  "description": "Backend for the IBC job portal",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "dev": "nodemon server.js"
+  },
+  "author": "Rainer Wittmann <r-wittmann@gmx.net>",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.12.4",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

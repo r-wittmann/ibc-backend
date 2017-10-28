@@ -1,0 +1,220 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ibc-backend",
+		"_postman_id": "32ef7b31-c6bb-f132-8b54-b9097103dd58",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"description": "",
+			"item": [
+				{
+					"name": "admin login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:9090/admin/authenticate",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "admin",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "L4V%nuv@*6g_mY9#",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get admin/users",
+					"request": {
+						"url": "http://localhost:9090/admin/users",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api",
+			"description": "",
+			"item": [
+				{
+					"name": "api login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:9090/api/authenticate",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "admin",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "L4V%nuv@*6g_mY9#",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get api/companies",
+					"request": {
+						"url": "http://localhost:9090/api/companies",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get api/postings",
+					"request": {
+						"url": "http://localhost:9090/api/postings",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get api/recruiters",
+					"request": {
+						"url": "http://localhost:9090/api/recruiters",
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "public",
+			"description": "",
+			"item": [
+				{
+					"name": "get public/companies",
+					"request": {
+						"url": "http://localhost:9090/public/companies",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get public/postings",
+					"request": {
+						"url": "http://localhost:9090/public/postings",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get public/recruiters",
+					"request": {
+						"url": "http://localhost:9090/public/recruiters",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
