@@ -2,6 +2,7 @@
   "name": "ibc-backend",
   "version": "0.0.1",
   "description": "Backend for the IBC job portal",
+  "repository": "https://github.com/r-wittmann/ibc-backend.git",
   "main": "server.js",
   "scripts": {
     "test": "test",

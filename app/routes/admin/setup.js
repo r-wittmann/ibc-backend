@@ -13,7 +13,7 @@ module.exports = function(app, path) {
                     name: 'admin',
                     password: 'L4V%nuv@*6g_mY9#',
                     admin: true,
-                    regAccepted: true,
+                    regAccepted: true
                 });
 
                 // save the admin user
