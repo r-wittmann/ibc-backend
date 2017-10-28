@@ -8,6 +8,7 @@ module.exports = function(app) {
     include(basePath + 'admin/setup')(app, '/admin/setup');
     include(basePath + 'admin/authenticate')(app, '/admin/authenticate');
 
+    include(basePath + 'api/register')(app, '/api/register');
     include(basePath + 'api/authenticate')(app, '/api/authenticate');
 
     include(basePath + 'public/companies')(app, '/public/companies');
