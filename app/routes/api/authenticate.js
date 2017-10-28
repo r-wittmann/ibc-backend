@@ -1,6 +1,6 @@
 // private route to retrieve a jwt token in exchange for username and password
-var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var User = include('app/models/user.js');
+const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const User = include('app/models/user.js');
 
 module.exports = function(app, path) {
 
@@ -13,7 +13,7 @@ module.exports = function(app, path) {
 
             if (!user) {
                 res.json({ success: false, message: 'Authentication failed. User not found.' });
-            } else if (user) {
+            } else if (user && user.regAccepted) {
 
                 user.comparePassword(req.body.password, function(err, isMatch) {
                     if (err) throw err;
@@ -22,11 +22,12 @@ module.exports = function(app, path) {
                     } else if (isMatch) {
                         // if user is found and password is right
                         // create a token the given payload
-                        const payload = {
+                        let payload = {
+                            id: user._id,
                             name: user.name,
                             admin: user.admin
                         };
-                        var token = jwt.sign(payload, app.get('secret'));
+                        let token = jwt.sign(payload, app.get('secret'));
 
                         // return the information including token as JSON
                         res.json({
@@ -35,6 +36,8 @@ module.exports = function(app, path) {
                         });
                     }
                 });
+            } else {
+                res.status(403).send('User not approved yet');
             }
         });
     });

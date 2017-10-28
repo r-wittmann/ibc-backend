@@ -1,10 +1,32 @@
-// private route to retrieve company details including sub companies and recruiters.
-var Company = include('app/models/company');
-var validateToken = include('app/routes/api/validateToken');
+// private route to retrieve and update company details
+
+const Company = include('app/models/company');
+const validateToken = include('app/routes/api/validateToken');
 
 module.exports = function(app, path) {
-    // endpoint for creating a company is still missing
 
+    // create new company
+    app.post(path,
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+
+            let company = new Company({
+                owner: req.decodedToken.id,
+                name: req.body.name,
+                address: req.body.address,
+                recruiters: [req.body.recruiters]
+            });
+
+            company.save(function(err) {
+                if (err) throw err;
+                res.json({ success: true });
+            });
+        }
+    );
+
+    // get list of companies
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -14,8 +36,10 @@ module.exports = function(app, path) {
                 if (err) throw err;
                 res.json(companies);
             })
-        });
+        }
+    );
 
+    // get company by id
     app.get(path + '/:id',
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -24,12 +48,49 @@ module.exports = function(app, path) {
             Company.findById(req.params.id, function(err, company) {
                 if (err) throw err;
                 if (!company) {
-                    res.json({ success: false, message: 'User not found' });
+                    res.json({ success: false, message: 'Company not found' });
                 } else {
                     res.json(company);
                 }
             });
-        });
+        }
+    );
 
-    // endpoint for updating a company is still missing
+    // update a company
+    app.put(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.findById(req.params.id, function(err, company) {
+                if (err) throw err;
+                if (!company) {
+                    res.json({ success: false, message: 'Company not found' });
+                } else {
+                    let newCompany = Object.assign(company, req.body);
+                    newCompany.save(function(err) {
+                        if (err) throw err;
+                        res.json({ success: true });
+                    });
+                }
+            });
+        }
+    );
+
+    // delete a company
+    app.delete(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.remove({ _id: req.params.id }, function(err, company) {
+                if (err) throw err;
+                if (!company) {
+                    res.json({ success: false, message: 'Company not found' });
+                } else {
+                    res.json({ success: true });
+                }
+            });
+        }
+    );
 };

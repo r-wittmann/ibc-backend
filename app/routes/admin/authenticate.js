@@ -1,6 +1,6 @@
 // admin route to retrieve a jwt token in exchange for username and password
-var jwt = require('jsonwebtoken');
-var User = include('app/models/user.js');
+const jwt = require('jsonwebtoken');
+const User = include('app/models/user.js');
 
 module.exports = function(app, path) {
 
@@ -22,11 +22,12 @@ module.exports = function(app, path) {
                     } else if (isMatch) {
                         // if user is found and password is right
                         // create a token the given payload
-                        const payload = {
+                        let payload = {
+                            id: user._id,
                             name: user.name,
                             admin: user.admin
                         };
-                        var token = jwt.sign(payload, app.get('secret'));
+                        let token = jwt.sign(payload, app.get('secret'));
 
                         // return the information including token as JSON
                         res.json({
