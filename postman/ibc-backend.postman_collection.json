@@ -370,7 +370,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/{{recruiterId}}",
+							"raw": "http://localhost:9090/api/recruiters",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -378,8 +378,7 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"recruiters",
-								"{{recruiterId}}"
+								"recruiters"
 							]
 						},
 						"description": ""
@@ -450,7 +449,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/postings/{{postingId}}",
+							"raw": "http://localhost:9090/api/postings",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -458,8 +457,7 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"postings",
-								"{{postingId}}"
+								"postings"
 							]
 						},
 						"description": ""
@@ -510,6 +508,156 @@
 							"path": [
 								"public",
 								"companies"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "(7) deletion",
+			"description": "",
+			"item": [
+				{
+					"name": "api login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"new user\",\n\t\"password\": \"test123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete api/posting",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/postings/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"postings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete api/recruiter",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete api/company",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/companies/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						},
 						"description": ""
