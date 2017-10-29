@@ -20,7 +20,7 @@ module.exports = function(app, path) {
             });
 
             company.save(function(err) {
-                if (err) throw err;
+                if (err) res.status(500).send(err);
                 res.json({ success: true });
             });
         }
@@ -33,7 +33,7 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.find({}, function(err, companies) {
-                if (err) throw err;
+                if (err) res.status(500).send(err);
                 res.json(companies);
             })
         }
@@ -46,7 +46,7 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
-                if (err) throw err;
+                if (err) res.status(500).send(err);
                 if (!company) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
@@ -63,13 +63,13 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
-                if (err) throw err;
+                if (err) res.status(500).send(err);
                 if (!company) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
                     let newCompany = Object.assign(company, req.body);
                     newCompany.save(function(err) {
-                        if (err) throw err;
+                        if (err) res.status(500).send(err);
                         res.json({ success: true });
                     });
                 }
@@ -84,7 +84,7 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.remove({ _id: req.params.id }, function(err, company) {
-                if (err) throw err;
+                if (err) res.status(500).send(err);
                 if (!company) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {

@@ -1,4 +1,5 @@
-// admin route to retrieve users and manage them
+// api route to register a users
+
 const User = include('app/models/user');
 
 module.exports = function(app, path) {
@@ -6,7 +7,7 @@ module.exports = function(app, path) {
     app.post(path, function(req, res) {
 
         User.findOne({ name: req.body.name }, function(err, user) {
-            if (err) throw err;
+            if (err) res.status(500).send(err);
 
             if (!user) {
                 // create user
@@ -19,7 +20,7 @@ module.exports = function(app, path) {
 
                 // save the user
                 newUser.save(function(err) {
-                    if (err) throw err;
+                    if (err) res.status(500).send(err);
                     res.json({ success: true });
                 });
             } else {
