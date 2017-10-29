@@ -62,14 +62,15 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Recruiter.findById(req.params.id, function(err, recruiter) {
+
                 if (err) res.status(500).send(err);
+
                 if (!recruiter || recruiter.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
-                    let updatedRecruiter = Object.assign(recruiter, req.body);
-                    updatedRecruiter.save(function(err) {
+                    Recruiter.findByIdAndUpdate(req.params.id, req.body.recruiter, function(err, recruiter) {
                         if (err) res.status(500).send(err);
-                        res.json({ success: true });
+                        res.json({ success: true, id: recruiter._id });
                     });
                 }
             });
