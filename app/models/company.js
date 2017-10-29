@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var CompanySchema = new Schema({
+const CompanySchema = new Schema({
     // reference to user table
     owner: { type: String, required: true },
     // company

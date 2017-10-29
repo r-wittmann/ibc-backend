@@ -29,7 +29,9 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.find({}, function(err, companies) {
+
                 if (err) res.status(500).send(err);
+
                 res.json(companies
                     .filter(company => company.owner === req.decodedToken.id)
                     .map(company => ({
@@ -48,7 +50,9 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
+
                 if (err) res.status(500).send(err);
+
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
@@ -71,8 +75,7 @@ module.exports = function(app, path) {
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
-                    let updatedCompany = Object.assign({}, company, req.body);
-                    updatedCompany.save(function(err) {
+                    Company.findByIdAndUpdate(req.params.id, req.body.company, function(err, company) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true, id: company._id });
                     });
@@ -88,12 +91,15 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
+
                 if (err) res.status(500).send(err);
+
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
                     company.remove();
-                    Posting.deleteMany({company: req.params.id}, function(err) {});
+                    Posting.deleteMany({ company: req.params.id }, function(err) {
+                    });
                     res.json({ success: true });
                 }
             });
