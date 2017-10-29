@@ -19,7 +19,7 @@ module.exports = function(app, path) {
         }
     );
 
-    // get a list of job postings
+    // get a list of job postings (only id, company, recruiter, title and subtitle)
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -27,7 +27,16 @@ module.exports = function(app, path) {
         function(req, res) {
             Posting.find({}, function(err, postings) {
                 if (err) res.status(500).send(err);
-                res.json(postings.filter(posting => posting.owner === req.decodedToken.id));
+                res.json(postings
+                    .filter(posting => posting.owner === req.decodedToken.id)
+                    .map(posting => ({
+                        _id: posting._id,
+                        company: posting.company,
+                        recruiter: posting.recruiter,
+                        title: posting.title,
+                        subtitle: posting.subtitle
+                    }))
+                );
             })
         });
 

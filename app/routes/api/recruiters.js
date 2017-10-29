@@ -20,7 +20,7 @@ module.exports = function(app, path) {
         }
     );
 
-    // get a list of recruiters
+    // get a list of recruiters (only id, name and email)
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -28,7 +28,14 @@ module.exports = function(app, path) {
         function(req, res) {
             Recruiter.find({}, function(err, recruiters) {
                 if (err) res.status(500).send(err);
-                res.json(recruiters.filter(recruiter => recruiter.owner === req.decodedToken.id));
+                res.json(recruiters
+                    .filter(recruiter => recruiter.owner === req.decodedToken.id)
+                    .map(recruiter => ({
+                        _id: recruiter._id,
+                        name: recruiter.name,
+                        email: recruiter.email
+                    }))
+                );
             })
         });
 

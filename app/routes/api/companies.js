@@ -22,7 +22,7 @@ module.exports = function(app, path) {
         }
     );
 
-    // get a list of companies
+    // get a list of companies (only name and id)
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -30,7 +30,13 @@ module.exports = function(app, path) {
         function(req, res) {
             Company.find({}, function(err, companies) {
                 if (err) res.status(500).send(err);
-                res.json(companies.filter(company => company.owner === req.decodedToken.id));
+                res.json(companies
+                    .filter(company => company.owner === req.decodedToken.id)
+                    .map(company => ({
+                        name: company.name,
+                        _id: company._id
+                    }))
+                );
             })
         }
     );

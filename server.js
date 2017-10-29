@@ -37,9 +37,9 @@ global.include = function (file) {
 // routes ================
 // =======================
 
-include('app/routes/index')(app);
-
 app.use(cors());
+
+include('app/routes/index')(app);
 
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);
