@@ -13,9 +13,6 @@ module.exports = function(app) {
 
     include(basePath + 'public/companies')(app, '/public/companies');
     include(basePath + 'public/postings')(app, '/public/postings');
-    include(basePath + 'public/recruiters')(app, '/public/recruiters');
-
-
 
     // ============================
     // private routes, token needed
@@ -25,11 +22,9 @@ module.exports = function(app) {
     include(basePath + 'api/postings')(app, '/api/postings');
     include(basePath + 'api/recruiters')(app, '/api/recruiters');
 
-
     // ===============================================
     // admin routes, token and admin privileges needed
     // ===============================================
 
     include(basePath + 'admin/users')(app, '/admin/users');
-
 };

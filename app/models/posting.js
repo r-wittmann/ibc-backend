@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PostingSchema = new Schema({
+    // reference to owner
+    owner: {type: String, required: true},
     // reference to company
     company: { type: String, required: true },
     // reference to recruiter

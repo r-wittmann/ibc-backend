@@ -11,15 +11,15 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            let posting = new Posting(req.body);
+            let posting = new Posting(Object.assign({}, { owner: req.decodedToken.id }, req.body));
             posting.save(function(err) {
                 if (err) res.status(500).send(err);
-                res.send({ success: true });
+                res.send({ success: true, id: posting._id });
             })
         }
     );
 
-    // get a list of job postings, not filtered for company yet
+    // get a list of job postings
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -27,11 +27,11 @@ module.exports = function(app, path) {
         function(req, res) {
             Posting.find({}, function(err, postings) {
                 if (err) res.status(500).send(err);
-                res.json(postings);
+                res.json(postings.filter(posting => posting.owner === req.decodedToken.id));
             })
         });
 
-    // get a job posting by id, not filtered for company yet
+    // get a job posting by id
     app.get(path + '/:id',
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -39,7 +39,7 @@ module.exports = function(app, path) {
         function(req, res) {
             Posting.findById(req.params.id, function(err, posting) {
                 if (err) res.status(500).send(err);
-                if (!posting) {
+                if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
                     res.json(posting);
@@ -55,11 +55,11 @@ module.exports = function(app, path) {
         function(req, res) {
             Posting.findById(req.params.id, function(err, posting) {
                 if (err) res.status(500).send(err);
-                if (!posting) {
+                if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    let newPosting = Object.assign(posting, req.body);
-                    newPosting.save(function(err) {
+                    let updatedPosting = Object.assign(posting, req.body);
+                    updatedPosting.save(function(err) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true });
                     });
@@ -74,11 +74,12 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Posting.remove({ _id: req.params.id }, function(err, posting) {
+            Posting.findById(req.params.id, function(err, posting) {
                 if (err) res.status(500).send(err);
-                if (!posting) {
+                if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
+                    posting.remove();
                     res.json({ success: true });
                 }
             });

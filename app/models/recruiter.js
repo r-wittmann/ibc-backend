@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var RecruiterSchema = new Schema({
-    // reference to company
-    company: { type: String, required: true },
+    // reference to owner
+    owner: {type: String, required: true},
     // recruiter
     name: { type: String, required: true },
     email: { type: String, required: true },

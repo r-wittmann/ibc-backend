@@ -1,6 +1,7 @@
 // private route to retrieve and update company details
 
 const Company = include('app/models/company');
+const Posting = include('app/models/posting');
 const validateToken = include('app/routes/api/validateToken');
 
 module.exports = function(app, path) {
@@ -12,21 +13,16 @@ module.exports = function(app, path) {
         },
         function(req, res) {
 
-            let company = new Company({
-                owner: req.decodedToken.id,
-                name: req.body.name,
-                address: req.body.address,
-                recruiters: [req.body.recruiters]
-            });
+            let company = new Company(Object.assign({}, { owner: req.decodedToken.id }, req.body));
 
             company.save(function(err) {
                 if (err) res.status(500).send(err);
-                res.json({ success: true });
+                res.json({ success: true, id: company._id });
             });
         }
     );
 
-    // get list of companies
+    // get a list of companies
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -34,12 +30,12 @@ module.exports = function(app, path) {
         function(req, res) {
             Company.find({}, function(err, companies) {
                 if (err) res.status(500).send(err);
-                res.json(companies);
+                res.json(companies.filter(company => company.owner === req.decodedToken.id));
             })
         }
     );
 
-    // get company by id
+    // get one company by id
     app.get(path + '/:id',
         function(req, res, next) {
             validateToken(req, res, next, app);
@@ -47,7 +43,7 @@ module.exports = function(app, path) {
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
                 if (err) res.status(500).send(err);
-                if (!company) {
+                if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
                     res.json(company);
@@ -63,14 +59,16 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.findById(req.params.id, function(err, company) {
+
                 if (err) res.status(500).send(err);
-                if (!company) {
+
+                if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
-                    let newCompany = Object.assign(company, req.body);
-                    newCompany.save(function(err) {
+                    let updatedCompany = Object.assign({}, company, req.body);
+                    updatedCompany.save(function(err) {
                         if (err) res.status(500).send(err);
-                        res.json({ success: true });
+                        res.json({ success: true, id: company._id });
                     });
                 }
             });
@@ -83,11 +81,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Company.remove({ _id: req.params.id }, function(err, company) {
+            Company.findById(req.params.id, function(err, company) {
                 if (err) res.status(500).send(err);
-                if (!company) {
+                if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
+                    company.remove();
+                    Posting.deleteMany({company: req.params.id}, function(err) {});
                     res.json({ success: true });
                 }
             });

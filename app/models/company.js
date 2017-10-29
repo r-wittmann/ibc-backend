@@ -7,10 +7,6 @@ var CompanySchema = new Schema({
     // company
     name: { type: String, required: true },
     address: { type: String, required: false },
-    // recruiter
-    recruiters: { type: [String], required: false },
-    // postings
-    postings: { type: [String], required: false }
     // ======================
     // lots of stuff missing.
     // ======================

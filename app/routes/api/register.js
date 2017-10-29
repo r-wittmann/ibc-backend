@@ -21,7 +21,7 @@ module.exports = function(app, path) {
                 // save the user
                 newUser.save(function(err) {
                     if (err) res.status(500).send(err);
-                    res.json({ success: true });
+                    res.json({ success: true, id: newUser._id });
                 });
             } else {
                 res.json({ success: false, message: 'User already exists' });
