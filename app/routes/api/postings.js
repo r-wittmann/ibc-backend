@@ -63,14 +63,15 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Posting.findById(req.params.id, function(err, posting) {
+
                 if (err) res.status(500).send(err);
+
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    let updatedPosting = Object.assign(posting, req.body);
-                    updatedPosting.save(function(err) {
+                    Posting.findByIdAndUpdate(req.params.id, req.body.posting, function(err, posting) {
                         if (err) res.status(500).send(err);
-                        res.json({ success: true });
+                        res.json({ success: true, id: posting._id });
                     });
                 }
             });
