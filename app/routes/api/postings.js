@@ -34,7 +34,6 @@ module.exports = function(app, path) {
                         company: posting.company,
                         recruiter: posting.recruiter,
                         title: posting.title,
-                        subtitle: posting.subtitle
                     }))
                 );
             })
@@ -69,7 +68,7 @@ module.exports = function(app, path) {
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    Posting.findByIdAndUpdate(req.params.id, req.body.posting, function(err, posting) {
+                    Posting.findByIdAndUpdate(req.params.id, req.body, function(err, posting) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true, id: posting._id });
                     });
