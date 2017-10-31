@@ -3,6 +3,8 @@
 const User = include('app/models/user');
 const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
+const mailService = include('app/mailService');
+
 
 module.exports = function(app, path) {
 
@@ -55,16 +57,23 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-            User.update({ _id: req.params.id }, { $set: { regAccepted: true } }, function(err, user) {
+            User.findById(req.params.id, function(err, user) {
 
                 if (err) res.status(500).send(err);
 
                 if (!user) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
-                    res.json({ success: true });
+                    let newUser = user;
+                    newUser.regAccepted = true;
+                    User.findByIdAndUpdate(req.params.id, newUser, function(err, user) {
+                        if (err) res.status(500).send(err);
+                        mailService.sendApprovalMail(user.name);
+                        res.json({ success: true });
+                    });
+
                 }
-            })
+            });
         }
     );
 
@@ -75,16 +84,19 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-            User.remove({ _id: req.params.id }, function(err, user) {
-
+            User.findById(req.params.id, function(err, user) {
                 if (err) res.status(500).send(err);
 
                 if (!user) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
-                    res.json({ success: true });
+                    User.findByIdAndRemove(req.params.id, function(err, user) {
+                        if (err) res.status(500).send(err);
+                        mailService.sendDeclineMail(user.name);
+                        res.json({ success: true });
+                    })
                 }
-            })
+            });
         }
     );
 };

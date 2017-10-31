@@ -1,6 +1,7 @@
 // api route to register a users
 
 const User = include('app/models/user');
+const mailService = include('app/mailService');
 
 module.exports = function(app, path) {
 
@@ -21,6 +22,7 @@ module.exports = function(app, path) {
                 // save the user
                 newUser.save(function(err) {
                     if (err) res.status(500).send(err);
+                    mailService.sendApprovalRequestedMail();
                     res.json({ success: true, id: newUser._id });
                 });
             } else {
