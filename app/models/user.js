@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
-// set up a mongoose model and pass it using module.exports
 const UserSchema = new Schema({
     name: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },

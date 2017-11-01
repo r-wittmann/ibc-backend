@@ -13,13 +13,13 @@ module.exports = function(app, path) {
             if (err) res.status(500).send(err);
 
             if (!user) {
-                res.json({ success: false, message: 'Authentication failed. User not found.' });
+                res.status(403).send({ success: false, message: 'Authentication failed. User not found.' });
             } else if (user && user.regAccepted) {
 
                 user.comparePassword(req.body.password, function(err, isMatch) {
                     if (err) res.status(500).send(err);
                     if (!isMatch) {
-                        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                        res.status(403).send({ success: false, message: 'Authentication failed. Wrong password.' });
                     } else if (isMatch) {
                         // if user is found and password is right
                         // create a token the given payload

@@ -33,7 +33,7 @@ module.exports = function(app, path) {
                     .map(recruiter => ({
                         _id: recruiter._id,
                         name: recruiter.name,
-                        email: recruiter.email
+                        email: recruiter.email,
                     }))
                 );
             })
@@ -68,9 +68,9 @@ module.exports = function(app, path) {
                 if (!recruiter || recruiter.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
-                    Recruiter.findByIdAndUpdate(req.params.id, req.body.recruiter, function(err, recruiter) {
+                    Recruiter.findByIdAndUpdate(req.params.id, req.body, function(err, recruiter) {
                         if (err) res.status(500).send(err);
-                        res.json({ success: true, id: recruiter._id });
+                        res.json({ success: true, recruiter });
                     });
                 }
             });
@@ -89,7 +89,8 @@ module.exports = function(app, path) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
                     recruiter.remove();
-                    Posting.deleteMany({recruiter: req.params.id}, function(err) {});
+                    Posting.deleteMany({ recruiter: req.params.id }, function(err) {
+                    });
                     res.json({ success: true });
                 }
             });

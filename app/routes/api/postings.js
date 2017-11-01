@@ -70,7 +70,7 @@ module.exports = function(app, path) {
                 } else {
                     Posting.findByIdAndUpdate(req.params.id, req.body, function(err, posting) {
                         if (err) res.status(500).send(err);
-                        res.json({ success: true, id: posting._id });
+                        res.json({ success: true, posting });
                     });
                 }
             });

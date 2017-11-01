@@ -1,16 +1,14 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var RecruiterSchema = new Schema({
+const RecruiterSchema = new Schema({
     // reference to owner
-    owner: {type: String, required: true},
+    owner: { type: String, required: true },
     // recruiter
     name: { type: String, required: true },
     email: { type: String, required: true },
-    telephone: { type: String, required: true }
-    // ======================
-    // lots of stuff missing.
-    // ======================
+    telephone: { type: String, required: true },
+    position: { type: String, required: true }
 });
 
 module.exports = mongoose.model('Recruiter', RecruiterSchema);
