@@ -27,15 +27,25 @@ module.exports = function(app, path) {
         function(req, res) {
             Posting.find({}, function(err, postings) {
                 if (err) res.status(500).send(err);
-                res.json(postings
-                    .filter(posting => posting.owner === req.decodedToken.id)
-                    .map(posting => ({
-                        _id: posting._id,
-                        company: posting.company,
-                        recruiter: posting.recruiter,
-                        title: posting.title,
-                    }))
-                );
+                // just respond with postings where the id from the token correspond with the postings owner
+                postings = postings.filter(posting => posting.owner === req.decodedToken.id);
+
+                // if there are query parameters, iterate over them,
+                // check if they are actually fields of postings and than filter for the provided value
+                for (let key in req.query) {
+                    if (req.query.hasOwnProperty(key) && key in postings[0]) {
+                        console.log(key, ':', req.query[key]);
+                        postings = postings.filter(posting => posting[key] === req.query[key])
+                    }
+                }
+                // reduce posting to the essential information to save bandwidth
+                postings = postings.map(posting => ({
+                    _id: posting._id,
+                    company: posting.company,
+                    recruiter: posting.recruiter,
+                    title: posting.title,
+                }));
+                res.json(postings);
             })
         });
 
