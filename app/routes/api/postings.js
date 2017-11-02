@@ -35,7 +35,7 @@ module.exports = function(app, path) {
                 for (let key in req.query) {
                     if (req.query.hasOwnProperty(key) && key in postings[0]) {
                         console.log(key, ':', req.query[key]);
-                        postings = postings.filter(posting => posting[key] === req.query[key])
+                        postings = postings.filter(posting => posting[key] === req.query[key]);
                     }
                 }
                 // reduce posting to the essential information to save bandwidth

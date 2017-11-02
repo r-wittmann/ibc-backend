@@ -4,8 +4,13 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new Schema({
-    name: { type: String, required: true, index: { unique: true } },
+    email: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },
+    company: { type: String, required: true },
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    payment: { type: String, required: true },
+    vat: { type: String, required: true },
     admin: Boolean,
     regAccepted: { type: Boolean, required: true }
 });

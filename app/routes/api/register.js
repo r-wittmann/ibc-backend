@@ -7,17 +7,15 @@ module.exports = function(app, path) {
 
     app.post(path, function(req, res) {
 
-        User.findOne({ name: req.body.name }, function(err, user) {
+        User.findOne({ email: req.body.email }, function(err, user) {
             if (err) res.status(500).send(err);
 
             if (!user) {
                 // create user
-                let newUser = new User({
-                    name: req.body.name,
-                    password: req.body.password,
+                let newUser = new User(Object.assign({}, req.body, {
                     admin: false,
                     regAccepted: false
-                });
+                }));
 
                 // save the user
                 newUser.save(function(err) {

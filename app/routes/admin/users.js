@@ -19,6 +19,9 @@ module.exports = function(app, path) {
 
                 if (err) res.status(500).send(err);
 
+                // remove the calling admin user
+                users = users.filter(user => !user._id.equals(req.decodedToken.id));
+
                 // remove passwords from the user objects
                 for (let user of users) {
                     user.password = undefined;
@@ -68,7 +71,7 @@ module.exports = function(app, path) {
                     newUser.regAccepted = true;
                     User.findByIdAndUpdate(req.params.id, newUser, function(err, user) {
                         if (err) res.status(500).send(err);
-                        mailService.sendApprovalMail(user.name);
+                        mailService.sendApprovalMail(user.email);
                         res.json({ success: true });
                     });
 
@@ -92,7 +95,7 @@ module.exports = function(app, path) {
                 } else {
                     User.findByIdAndRemove(req.params.id, function(err, user) {
                         if (err) res.status(500).send(err);
-                        mailService.sendDeclineMail(user.name);
+                        mailService.sendDeclineMail(user.email);
                         res.json({ success: true });
                     })
                 }

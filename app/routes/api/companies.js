@@ -22,7 +22,7 @@ module.exports = function(app, path) {
         }
     );
 
-    // get a list of companies (only name and id)
+    // get a list of companies (only email and id)
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);

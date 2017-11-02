@@ -1,4 +1,4 @@
-// private route to retrieve a jwt token in exchange for username and password
+// private route to retrieve a jwt token in exchange for email and password
 
 const jwt = require('jsonwebtoken');
 const User = include('app/models/user.js');
@@ -8,7 +8,7 @@ module.exports = function(app, path) {
     app.post(path, function(req, res) {
 
         // find the user
-        User.findOne({ name: req.body.name }, function(err, user) {
+        User.findOne({ email: req.body.email }, function(err, user) {
 
             if (err) res.status(500).send(err);
 
@@ -25,7 +25,7 @@ module.exports = function(app, path) {
                         // create a token the given payload
                         let payload = {
                             id: user._id,
-                            name: user.name,
+                            email: user.email,
                             admin: user.admin
                         };
                         let token = jwt.sign(payload, app.get('secret'));

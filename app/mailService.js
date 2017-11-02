@@ -14,7 +14,7 @@ class MailService {
     
     static sendApprovalRequestedMail() {
         let mailOptions = {
-            to: 'r-wittmann@gmx.net',
+            to: 'ibc.job.portal@gmail.com',
             subject: 'A new company has registered',
             html: '<p>Hi Admin,</p>' +
             '<p>please log in to your account at <a href="http://localhost:3000/admin/login">http://job-portal.ibc/admin/login</a>' +
