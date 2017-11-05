@@ -68,7 +68,7 @@ module.exports = function(app, path) {
                 if (!recruiter || recruiter.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
-                    Recruiter.findByIdAndUpdate(req.params.id, req.body, function(err, recruiter) {
+                    Recruiter.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, recruiter) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true, recruiter });
                     });

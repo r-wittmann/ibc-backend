@@ -78,7 +78,7 @@ module.exports = function(app, path) {
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    Posting.findByIdAndUpdate(req.params.id, req.body, function(err, posting) {
+                    Posting.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, posting) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true, posting });
                     });

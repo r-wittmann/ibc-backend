@@ -75,7 +75,7 @@ module.exports = function(app, path) {
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
-                    Company.findByIdAndUpdate(req.params.id, req.body, function(err, company) {
+                    Company.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, company) {
                         if (err) res.status(500).send(err);
                         res.json({ success: true, company });
                     });
