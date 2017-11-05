@@ -21,6 +21,7 @@ module.exports = function(app) {
     include(basePath + 'api/companies')(app, '/api/companies');
     include(basePath + 'api/postings')(app, '/api/postings');
     include(basePath + 'api/recruiters')(app, '/api/recruiters');
+    include(basePath + 'api/profile')(app, '/api/profile');
 
     // ===============================================
     // admin routes, token and admin privileges needed
