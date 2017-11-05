@@ -12,16 +12,16 @@ module.exports = function(app, path) {
 
             if (!user) {
                 // create user
-                let newUser = new User(Object.assign({}, req.body, {
+                let user = Object.assign({}, req.body, {
                     admin: false,
                     regAccepted: false
-                }));
+                });
 
                 // save the user
-                newUser.save(function(err) {
+                User.create(user, function(err, user) {
                     if (err) res.status(500).send(err);
                     mailService.sendApprovalRequestedMail();
-                    res.json({ success: true, id: newUser._id });
+                    res.json({ success: true, id: user._id });
                 });
             } else {
                 res.json({ success: false, message: 'User already exists' });

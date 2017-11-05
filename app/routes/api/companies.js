@@ -13,9 +13,9 @@ module.exports = function(app, path) {
         },
         function(req, res) {
 
-            let company = new Company(Object.assign({}, { owner: req.decodedToken.id }, req.body));
+            let company = Object.assign({}, { owner: req.decodedToken.id }, req.body);
 
-            company.save(function(err) {
+            Company.create(company, function(err, company) {
                 if (err) res.status(500).send(err);
                 res.json({ success: true, id: company._id });
             });
@@ -68,17 +68,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Company.findById(req.params.id, function(err, company) {
-
+            Company.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, company) {
                 if (err) res.status(500).send(err);
 
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
-                    Company.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, company) {
-                        if (err) res.status(500).send(err);
-                        res.json({ success: true, company });
-                    });
+                    res.json({ success: true, company });
                 }
             });
         }
@@ -90,14 +86,12 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Company.findById(req.params.id, function(err, company) {
-
+            Company.findByIdAndRemove(req.params.id, function(err, company) {
                 if (err) res.status(500).send(err);
 
                 if (!company || company.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Company not found' });
                 } else {
-                    company.remove();
                     Posting.deleteMany({ company: req.params.id }, function(err) {
                     });
                     res.json({ success: true });

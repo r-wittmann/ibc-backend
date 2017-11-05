@@ -60,21 +60,14 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-            User.findById(req.params.id, function(err, user) {
-
+            User.findByIdAndUpdate(req.params.id, { regAccepted: true }, function(err, user) {
                 if (err) res.status(500).send(err);
 
                 if (!user) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
-                    let newUser = user;
-                    newUser.regAccepted = true;
-                    User.findByIdAndUpdate(req.params.id, newUser, function(err, user) {
-                        if (err) res.status(500).send(err);
-                        mailService.sendApprovalMail(user.email);
-                        res.json({ success: true });
-                    });
-
+                    mailService.sendApprovalMail(user.email);
+                    res.json({ success: true });
                 }
             });
         }
@@ -87,17 +80,14 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-            User.findById(req.params.id, function(err, user) {
+            User.findByIdAndRemove(req.params.id, function(err, user) {
                 if (err) res.status(500).send(err);
 
                 if (!user) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
-                    User.findByIdAndRemove(req.params.id, function(err, user) {
-                        if (err) res.status(500).send(err);
-                        mailService.sendDeclineMail(user.email);
-                        res.json({ success: true });
-                    })
+                    mailService.sendDeclineMail(user.email);
+                    res.json({ success: true });
                 }
             });
         }

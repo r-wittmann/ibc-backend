@@ -12,15 +12,15 @@ module.exports = function(app, path) {
 
             if (!user) {
                 // create admin user
-                let admin = new User({
+                let admin = {
                     email: 'ibc-job-portal@gmail.com',
                     password: 'L4V%nuv@*6g_mY9#',
                     admin: true,
                     regAccepted: true
-                });
+                };
 
                 // save the admin user
-                admin.save(function(err) {
+                User.create(admin, function(err) {
                     if (err) res.status(500).send(err);
                     res.json({ success: true });
                 });

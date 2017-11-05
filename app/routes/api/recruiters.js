@@ -12,11 +12,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            let recruiter = new Recruiter(Object.assign({}, { owner: req.decodedToken.id }, req.body));
-            recruiter.save(function(err) {
+
+            let recruiter = Object.assign({}, { owner: req.decodedToken.id }, req.body);
+
+            Recruiter.create(recruiter, function(err, recruiter) {
                 if (err) res.status(500).send(err);
                 res.send({ success: true, id: recruiter._id });
-            })
+            });
         }
     );
 
@@ -61,17 +63,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Recruiter.findById(req.params.id, function(err, recruiter) {
-
+            Recruiter.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, recruiter) {
                 if (err) res.status(500).send(err);
 
                 if (!recruiter || recruiter.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
-                    Recruiter.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, recruiter) {
-                        if (err) res.status(500).send(err);
-                        res.json({ success: true, recruiter });
-                    });
+                    res.json({ success: true, recruiter });
                 }
             });
         }
@@ -83,12 +81,12 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Recruiter.findById(req.params.id, function(err, recruiter) {
+            Recruiter.findByIdAndRemove(req.params.id, function(err, recruiter) {
                 if (err) res.status(500).send(err);
+
                 if (!recruiter || recruiter.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Recruiter not found' });
                 } else {
-                    recruiter.remove();
                     Posting.deleteMany({ recruiter: req.params.id }, function(err) {
                     });
                     res.json({ success: true });

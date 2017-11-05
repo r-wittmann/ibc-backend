@@ -15,6 +15,10 @@ module.exports = function(app, path) {
 
                 if (err) res.status(500).send(err);
 
+                if (!profile) {
+                    res.json({ success: false, message: 'Profile not found' });
+                }
+
                 res.json(profile);
             })
         }
@@ -26,19 +30,15 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            User.findById(req.decodedToken.id, function(err, profile) {
+            User.findByIdAndUpdate(req.decodedToken.id, req.body, { new: true }, function(err, profile) {
 
                 if (err) res.status(500).send(err);
 
                 if (!profile) {
                     res.json({ success: false, message: 'Profile not found' });
                 } else {
-                    User.findByIdAndUpdate(req.decodedToken.id, req.body, { new: true }, function(err, profile) {
-                        if (err) res.status(500).send(err);
-                        res.json({ success: true, profile });
-                    });
+                    res.json({ success: true, profile });
                 }
             });
-        }
-    );
+        });
 };

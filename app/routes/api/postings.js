@@ -11,11 +11,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            let posting = new Posting(Object.assign({}, { owner: req.decodedToken.id }, req.body));
-            posting.save(function(err) {
+
+            let posting = Object.assign({}, { owner: req.decodedToken.id }, req.body);
+
+            Posting.create(posting, function(err, posting) {
                 if (err) res.status(500).send(err);
                 res.send({ success: true, id: posting._id });
-            })
+            });
         }
     );
 
@@ -56,7 +58,9 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Posting.findById(req.params.id, function(err, posting) {
+
                 if (err) res.status(500).send(err);
+
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'User not found' });
                 } else {
@@ -71,17 +75,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Posting.findById(req.params.id, function(err, posting) {
-
+            Posting.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, posting) {
                 if (err) res.status(500).send(err);
 
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    Posting.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, posting) {
-                        if (err) res.status(500).send(err);
-                        res.json({ success: true, posting });
-                    });
+                    res.json({ success: true, posting });
                 }
             });
         }
@@ -93,12 +93,13 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Posting.findById(req.params.id, function(err, posting) {
+            Posting.findByIdAndRemove(req.params.id, function(err, posting) {
+
                 if (err) res.status(500).send(err);
+
                 if (!posting || posting.owner !== req.decodedToken.id) {
                     res.json({ success: false, message: 'Posting not found' });
                 } else {
-                    posting.remove();
                     res.json({ success: true });
                 }
             });
