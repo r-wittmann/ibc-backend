@@ -27,5 +27,5 @@ module.exports = function(app) {
     // admin routes, token and admin privileges needed
     // ===============================================
 
-    include(basePath + 'admin/users')(app, '/admin/users');
+    include(basePath + 'admin/accounts')(app, '/admin/accounts');
 };

@@ -1,5 +1,6 @@
 // admin route to retrieve users and manage them
 
+const Account = include('app/orm/account');
 const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
 const mailService = include('app/mailService');
@@ -7,30 +8,22 @@ const mailService = include('app/mailService');
 
 module.exports = function(app, path) {
 
-    // // get a list of all users
-    // app.get(path,
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     validateAdminToken,
-    //     function(req, res) {
-    //         User.find({}, function(err, users) {
-    //
-    //             if (err) res.status(500).send(err);
-    //
-    //             // remove the calling admin user
-    //             users = users.filter(user => !user._id.equals(req.decodedToken.id));
-    //
-    //             // remove passwords from the user objects
-    //             for (let user of users) {
-    //                 user.password = undefined;
-    //             }
-    //
-    //             res.json(users);
-    //         });
-    //     }
-    // );
-    //
+    // get a list of all users
+    app.get(path,
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+        Account.getAllAccounts()
+            .then((accounts) => {
+                accounts.forEach(account => account.password = undefined);
+                accounts.forEach(account => account.salt = undefined);
+                res.status(200).json(accounts);
+            })
+            .catch((err) => res.status(400).send(err));
+    })
+
     // // get one user by id
     // app.get(path + '/:id',
     //     function(req, res, next) {

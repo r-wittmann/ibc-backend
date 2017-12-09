@@ -3,6 +3,10 @@ module.exports = {
         return knex('t_account').insert(account);
     },
 
+    getAllAccounts() {
+        return knex('t_account').select();
+    },
+
     getByName(name) {
         return knex('t_account').where({ name });
     },
