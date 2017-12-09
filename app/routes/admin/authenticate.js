@@ -8,18 +8,18 @@ module.exports = function(app, path) {
 
     app.post(path, function(req, res) {
         // find the account
-        Account.getByName(req.body.name).then(([user]) => {
-            if (!user) {
+        Account.getByName(req.body.name).then(([account]) => {
+            if (!account) {
                 res.status(403).send('authentication failed. user doesn\'t exist or password is wrong');
-            } else if (user.password !== crypto.createHmac('sha512', user.salt).update(req.body.password).digest('hex')) {
+            } else if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.password).digest('hex')) {
                 res.status(403).send('authentication failed, user doesn\'t exist or password is wrong');
-            } else if (!user.admin) {
+            } else if (!account.admin) {
                 res.status(403).send('authentication failed, user is not an admin');
             } else {
                 let payload = {
-                    id: user.id,
-                    name: user.name,
-                    admin: user.admin
+                    id: account.id,
+                    name: account.name,
+                    admin: account.admin
                 };
                 let token = jwt.sign(payload, app.get('secret'), { expiresIn: '8h' });
 

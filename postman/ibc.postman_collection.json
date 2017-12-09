@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "POST /api/register",
+			"name": "register account",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -37,7 +37,7 @@
 			"response": []
 		},
 		{
-			"name": "POST /api/authenticate",
+			"name": "login to account",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -48,7 +48,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\"\n}"
+					"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"542b3194363a1855\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:9090/api/authenticate",
@@ -60,6 +60,37 @@
 					"path": [
 						"api",
 						"authenticate"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "forgot password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"new user\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/register/forgot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"register",
+						"forgot"
 					]
 				},
 				"description": ""
