@@ -1,0 +1,70 @@
+{
+	"info": {
+		"name": "ibc",
+		"_postman_id": "a2f5643c-b192-7082-d3ea-5c0368383a5e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /api/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\",\n    \"mother_company\": \"mother\",\n    \"website\": \"website\",\n    \"company_type\": \"type\",\n    \"person_of_contact\": \"Ray\",\n    \"email\": \"r-wittmann@gmx.net\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"register"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/authenticate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"authenticate"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
