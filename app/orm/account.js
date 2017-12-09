@@ -7,6 +7,10 @@ module.exports = {
         return knex('t_account').select();
     },
 
+    getById(id) {
+        return knex('t_account').where({ id })
+    },
+
     getByName(name) {
         return knex('t_account').where({ name });
     },

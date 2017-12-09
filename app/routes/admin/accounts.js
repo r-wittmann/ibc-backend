@@ -15,36 +15,30 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-        Account.getAllAccounts()
-            .then((accounts) => {
-                accounts.forEach(account => account.password = undefined);
-                accounts.forEach(account => account.salt = undefined);
-                res.status(200).json(accounts);
-            })
-            .catch((err) => res.status(400).send(err));
-    })
+            Account.getAllAccounts()
+                .then((accounts) => {
+                    accounts.forEach(account => account.password = undefined);
+                    accounts.forEach(account => account.salt = undefined);
+                    res.status(200).json(accounts);
+                })
+                .catch((err) => res.status(400).send(err));
+        });
 
-    // // get one user by id
-    // app.get(path + '/:id',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     validateAdminToken,
-    //     function(req, res) {
-    //         User.findById(req.params.id, function(err, user) {
-    //
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!user) {
-    //                 res.json({ success: false, message: 'User not found' });
-    //             } else {
-    //                 // remove password from the user object
-    //                 user.password = undefined;
-    //                 res.json(user);
-    //             }
-    //         });
-    //     });
-    //
+    // get one user by id
+    app.get(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            Account.getById(req.params.id)
+                .then(([account]) => {
+                    account.password = undefined;
+                    account.salt = undefined;
+                    res.status(200).json(account);
+                })
+                .catch((err) => res.status(404).send(err));
+        });
     // // accept the registration of a user
     // app.patch(path + '/:id/accept',
     //     function(req, res, next) {
