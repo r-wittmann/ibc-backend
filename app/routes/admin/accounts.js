@@ -17,6 +17,8 @@ module.exports = function(app, path) {
         function(req, res) {
             Account.getAllAccounts()
                 .then((accounts) => {
+                    // remove the calling admin user
+                    accounts = accounts.filter(account => account.id !== req.decodedToken.id);
                     accounts.forEach(account => account.password = undefined);
                     accounts.forEach(account => account.salt = undefined);
                     res.status(200).json(accounts);
