@@ -1,6 +1,6 @@
 // api route to register a users
 
-const Account = include('app/orm/account');
+const Account = include('app/orm/accountMapper');
 const MailService = include('app/mailService');
 const crypto = require('crypto');
 

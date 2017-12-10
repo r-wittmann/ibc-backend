@@ -1,6 +1,6 @@
 // admin route to retrieve users and manage them
 
-const Account = include('app/orm/account');
+const Account = include('app/orm/accountMapper');
 const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
 const MailService = include('app/mailService');

@@ -1,6 +1,6 @@
 // private route to retrieve a jwt token in exchange for email and password
 
-const Account = include('app/orm/account');
+const Account = include('app/orm/accountMapper');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 

@@ -1,7 +1,7 @@
 // admin route to instantiate the admin user
 
 const crypto = require('crypto');
-const Account = include('app/orm/account');
+const Account = include('app/orm/accountMapper');
 
 module.exports = function(app, path) {
 
