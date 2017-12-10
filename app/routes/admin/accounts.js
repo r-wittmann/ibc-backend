@@ -54,30 +54,27 @@ module.exports = function(app, path) {
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
                         .then(() => res.status(200).send('registration accepted'))
-                        .then(() => MailService.sendApprovalMail(account.mail))
+                        .then(() => MailService.sendApprovalMail(account.email))
                         .catch((err) => res.status(400).send(err));
                 })
                 .catch((err) => res.status(404).send(err));
         }
-    )
-    
-    // // decline the registration of a user (deleting it)
-    // app.delete(path + '/:id/decline',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     validateAdminToken,
-    //     function(req, res) {
-    //         User.findByIdAndRemove(req.params.id, function(err, user) {
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!user) {
-    //                 res.json({ success: false, message: 'User not found' });
-    //             } else {
-    //                 mailService.sendDeclineMail(user.email);
-    //                 res.json({ success: true });
-    //             }
-    //         });
-    //     }
-    // );
+    );
+
+    // decline the registration of a user (deleting it)
+    app.delete(path + '/:id/decline',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            Account.getById(req.params.id)
+                .then(([account]) => {
+                    Account.deleteAccount(account.id)
+                        .then(() => res.status(200).send('registration declined'))
+                        .then(() => MailService.sendApprovalMail(account.email))
+                        .catch((err) => res.status(400).send(err));
+                })
+                .catch((err) => res.status(404).send(err));
+        });
 };
