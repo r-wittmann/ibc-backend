@@ -31,10 +31,12 @@ module.exports = function(app, path) {
         let hashedPassword = crypto.createHmac('sha512', salt).update(password).digest('hex');
 
         Account.getByName(req.body.name).then(([account]) => {
-            account.salt = salt;
-            account.password = hashedPassword;
+            let updateObject = {
+                salt: salt,
+                password: hashedPassword
+            };
 
-            Account.updateAccount(account.name, account)
+            Account.updateAccount(account.id, updateObject)
                 .then(() => res.status(200).send('new password created'))
                 .then(() => MailService.sendNewPasswordMail(account.email, password));
         }).catch(() => res.status(403).send('account doesn\'t exist'));

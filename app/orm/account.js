@@ -15,8 +15,8 @@ module.exports = {
         return knex('t_account').where({ name });
     },
 
-    updateAccount(name, newAccount) {
-        return knex('t_account').where({ name })
-            .update(newAccount);
+    updateAccount(id, updateObject) {
+        return knex('t_account').where({ id })
+            .update(updateObject);
     }
 };

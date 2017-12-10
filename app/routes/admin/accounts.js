@@ -3,7 +3,7 @@
 const Account = include('app/orm/account');
 const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
-const mailService = include('app/mailService');
+const MailService = include('app/mailService');
 
 
 module.exports = function(app, path) {
@@ -39,26 +39,28 @@ module.exports = function(app, path) {
                 })
                 .catch((err) => res.status(404).send(err));
         });
-    // // accept the registration of a user
-    // app.patch(path + '/:id/accept',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     validateAdminToken,
-    //     function(req, res) {
-    //         User.findByIdAndUpdate(req.params.id, { regAccepted: true }, function(err, user) {
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!user) {
-    //                 res.json({ success: false, message: 'User not found' });
-    //             } else {
-    //                 mailService.sendApprovalMail(user.email);
-    //                 res.json({ success: true });
-    //             }
-    //         });
-    //     }
-    // );
-    //
+
+    // accept the registration of a user
+    app.patch(path + '/:id/accept',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            let updateObject = {
+                reg_accepted: true
+            };
+            Account.getById(req.params.id)
+                .then(([account]) => {
+                    Account.updateAccount(account.id, updateObject)
+                        .then(() => res.status(200).send('registration accepted'))
+                        .then(() => MailService.sendApprovalMail(account.mail))
+                        .catch((err) => res.status(400).send(err));
+                })
+                .catch((err) => res.status(404).send(err));
+        }
+    )
+    
     // // decline the registration of a user (deleting it)
     // app.delete(path + '/:id/decline',
     //     function(req, res, next) {
