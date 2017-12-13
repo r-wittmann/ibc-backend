@@ -57,6 +57,21 @@ class MailService {
         });
     }
 
+    static sendNewPasswordMail(email, password) {
+        let mailOptions = {
+            to: email,
+            subject: 'New password',
+            html: '<p>Hi</p>' +
+            '<p>Your new password for the ibc job platform is:<br>' +
+            password + '</p>' +
+            '<p>Kind Regards</p>'
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log(error);
+        });
+    }
+
 }
 
 module.exports = MailService;

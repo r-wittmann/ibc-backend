@@ -1,43 +1,32 @@
 // admin route to retrieve a jwt token in exchange for email and password
 
+const Account = include('app/orm/accountMapper');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const User = include('app/models/user.js');
 
 module.exports = function(app, path) {
 
     app.post(path, function(req, res) {
-
-        // find the user
-        User.findOne({ email: req.body.email }, function(err, user) {
-
-            if (err) res.status(500).send(err);
-
-            if (!user) {
-                res.status(403).send({ success: false, message: 'Authentication failed. User not found.' });
-            } else if (user && user.admin) {
-
-                user.comparePassword(req.body.password, function(err, isMatch) {
-                    if (err) res.status(500).send(err);
-                    if (!isMatch) {
-                        res.status(403).send({ success: false, message: 'Authentication failed. Wrong password.' });
-                    } else if (isMatch) {
-                        // if user is found and password is right
-                        // create a token the given payload
-                        let payload = {
-                            id: user._id,
-                            email: user.email,
-                            admin: user.admin
-                        };
-                        let token = jwt.sign(payload, app.get('secret'));
-
-                        // return the information including token as JSON
-                        res.json({ success: true, token: token });
-                    }
-                });
+        // find the account
+        Account.getByName(req.body.name).then(([account]) => {
+            if (!account) {
+                res.status(403).send('authentication failed. user doesn\'t exist or password is wrong');
+            } else if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.password).digest('hex')) {
+                res.status(403).send('authentication failed, user doesn\'t exist or password is wrong');
+            } else if (!account.admin) {
+                res.status(403).send('authentication failed, user is not an admin');
             } else {
-                res.status(403).send('User is not an admin');
+                let payload = {
+                    id: account.id,
+                    name: account.name,
+                    admin: account.admin
+                };
+                let token = jwt.sign(payload, app.get('secret'), { expiresIn: '8h' });
+
+                // return the information including token as JSON
+                res.status(200).send(token);
             }
-        });
-    });
+        })
+    })
 };
 

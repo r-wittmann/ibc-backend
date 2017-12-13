@@ -1,32 +1,27 @@
 // admin route to instantiate the admin user
 
-const User = include('app/models/user.js');
+const crypto = require('crypto');
+const Account = include('app/orm/accountMapper');
 
 module.exports = function(app, path) {
 
     app.get(path + '/nC3XDIqPl0t2gg5OGy5kfZM6jb6zjXQq4hkrncaiyQwbAoLI', function(req, res) {
 
-        User.findOne({ email: 'ibc-job-portal@gmail.com' }, function(err, user) {
+        let salt = crypto.randomBytes(4).toString('hex');
+        let password = crypto.createHmac('sha512', salt).update('L4V%nuv@*6g_mY9#').digest('hex');
 
-            if (err) res.status(500).send(err);
+        let account = {
+            name: 'admin',
+            salt: salt,
+            password: password,
+            person_of_contact: 'admin',
+            email: 'ibc-job-portal@gmail.com',
+            reg_accepted: true,
+            admin: true
+        };
 
-            if (!user) {
-                // create admin user
-                let admin = {
-                    email: 'ibc-job-portal@gmail.com',
-                    password: 'L4V%nuv@*6g_mY9#',
-                    admin: true,
-                    regAccepted: true
-                };
-
-                // save the admin user
-                User.create(admin, function(err) {
-                    if (err) res.status(500).send(err);
-                    res.json({ success: true });
-                });
-            } else {
-                res.json({ success: false, message: 'Database already instantiated' });
-            }
-        });
+        Account.createAccount(account)
+            .then(() => res.status(201).send('database initialized'))
+            .catch((err) => res.status(403).send('database already initialized'));
     });
 };
