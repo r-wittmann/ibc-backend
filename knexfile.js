@@ -5,5 +5,8 @@ module.exports = {
         database: 'ibc_database',
         user: 'root',
         password: 'mypassword'
+    },
+    seeds: {
+        directory: __dirname + '/seeds'
     }
 };
