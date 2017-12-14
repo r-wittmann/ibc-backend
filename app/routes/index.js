@@ -5,7 +5,6 @@ module.exports = function(app) {
     // public routes, no token needed
     // ==============================
 
-    include(basePath + 'admin/setup')(app, '/admin/setup');
     include(basePath + 'admin/authenticate')(app, '/admin/authenticate');
 
     include(basePath + 'api/register')(app, '/api/register');

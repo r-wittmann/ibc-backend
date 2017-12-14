@@ -17,6 +17,8 @@ module.exports = function(app, path) {
         function(req, res) {
             Account.getAllAccountsForAdmin()
                 .then((accounts) => {
+                    // remove the calling admin user
+                    accounts = accounts.filter(account => account.id !== req.decodedToken.id);
                     // only get the first occurrence of each account id
                     let uniqueAccounts = accounts.filter(function(account, index, self) {
                         return self.findIndex(a => a.id === account.id) === index;

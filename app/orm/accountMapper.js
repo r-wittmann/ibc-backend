@@ -6,7 +6,7 @@ module.exports = {
 
     getAllAccountsForAdmin() {
         return knex('t_account')
-            .join('t_company', {'t_account.id': 't_company.account_id'})
+            .leftJoin('t_company', 't_account.id', 't_company.account_id')
             .select(
                 't_account.id',
                 't_company.company_name',
