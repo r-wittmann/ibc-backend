@@ -15,31 +15,15 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
-            Account.getAllAccounts()
+            Account.getAllAccountsForAdmin()
                 .then((accounts) => {
-                    // remove the calling admin user
-                    accounts = accounts.filter(account => account.id !== req.decodedToken.id);
-                    accounts.forEach(account => account.password = undefined);
-                    accounts.forEach(account => account.salt = undefined);
-                    res.status(200).json(accounts);
+                    // only get the first occurrence of each account id
+                    let uniqueAccounts = accounts.filter(function(account, index, self) {
+                        return self.findIndex(a => a.id === account.id) === index;
+                    });
+                    res.status(200).json(uniqueAccounts);
                 })
                 .catch((err) => res.status(400).send(err));
-        });
-
-    // get one user by id
-    app.get(path + '/:id',
-        function(req, res, next) {
-            validateToken(req, res, next, app);
-        },
-        validateAdminToken,
-        function(req, res) {
-            Account.getById(req.params.id)
-                .then(([account]) => {
-                    account.password = undefined;
-                    account.salt = undefined;
-                    res.status(200).json(account);
-                })
-                .catch((err) => res.status(404).send(err));
         });
 
     // accept the registration of a user
@@ -50,7 +34,7 @@ module.exports = function(app, path) {
         validateAdminToken,
         function(req, res) {
             let updateObject = {
-                reg_accepted: true
+                status: 'approved'
             };
             Account.getById(req.params.id)
                 .then(([account]) => {
@@ -60,21 +44,23 @@ module.exports = function(app, path) {
                         .catch((err) => res.status(400).send(err));
                 })
                 .catch((err) => res.status(404).send(err));
-        }
-    );
+        });
 
-    // decline the registration of a user (deleting it)
-    app.delete(path + '/:id/decline',
+    // decline the registration of a user
+    app.patch(path + '/:id/decline',
         function(req, res, next) {
             validateToken(req, res, next, app);
         },
         validateAdminToken,
         function(req, res) {
+            let updateObject = {
+                status: 'declined'
+            };
             Account.getById(req.params.id)
                 .then(([account]) => {
-                    Account.deleteAccount(account.id)
+                    Account.updateAccount(account.id, updateObject)
                         .then(() => res.status(200).send('registration declined'))
-                        .then(() => MailService.sendApprovalMail(account.email))
+                        // TODO: open mailTo in the frontend
                         .catch((err) => res.status(400).send(err));
                 })
                 .catch((err) => res.status(404).send(err));

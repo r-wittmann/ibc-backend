@@ -14,7 +14,7 @@ module.exports = function(app, path) {
         let account = Object.assign({}, req.body, {
             salt: salt,
             password: password,
-            reg_accepted: false,
+            status: 'registered',
             admin: false
         });
 

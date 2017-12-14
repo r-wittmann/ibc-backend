@@ -4,9 +4,18 @@ module.exports = {
             .insert(account);
     },
 
-    getAllAccounts() {
+    getAllAccountsForAdmin() {
         return knex('t_account')
-            .select();
+            .join('t_company', {'t_account.id': 't_company.account_id'})
+            .select(
+                't_account.id',
+                't_company.company_name',
+                't_account.name',
+                't_account.email',
+                't_company.website',
+                't_account.company_type',
+                't_account.status'
+            );
     },
 
     getById(id) {
