@@ -23,7 +23,7 @@ module.exports = function(app, path) {
                 let token = jwt.sign(payload, app.get('secret'), { expiresIn: '8h'});
 
                 // return the information including token as JSON
-                res.status(200).send(token);
+                res.status(200).json(token);
             }
         })
     });
