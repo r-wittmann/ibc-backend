@@ -36,12 +36,12 @@ module.exports = function(app, path) {
         validateAdminToken,
         function(req, res) {
             let updateObject = {
-                status: 'approved'
+                status: 'accepted'
             };
             Account.getById(req.params.id)
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
-                        .then(() => res.status(200).send('registration accepted'))
+                        .then(() => res.status(200).json({'message': 'registration accepted'}))
                         .then(() => MailService.sendApprovalMail(account.email))
                         .catch((err) => res.status(400).send(err));
                 })
@@ -61,7 +61,7 @@ module.exports = function(app, path) {
             Account.getById(req.params.id)
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
-                        .then(() => res.status(200).send('registration declined'))
+                        .then(() => res.status(200).json({'message': 'registration declined'}))
                         // TODO: open mailTo in the frontend
                         .catch((err) => res.status(400).send(err));
                 })
