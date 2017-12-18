@@ -12,11 +12,8 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Account.getById(req.decodedToken.id)
+            Account.getByIdWithSelect(req.decodedToken.id)
                 .then(([account]) => {
-                    account.id = undefined;
-                    account.password = undefined;
-                    account.salt = undefined;
                     res.status(200).json(account)
                 })
                 .catch((err) => res.status(404).send('account not found'));

@@ -23,6 +23,17 @@ module.exports = {
             .where({ id })
     },
 
+    getByIdWithSelect(id) {
+        return knex('t_account')
+            .where({ id })
+            .select(
+                'name',
+                'email',
+                'mother_company',
+                'company_type'
+            );
+    },
+
     getByName(name) {
         return knex('t_account')
             .where({ name });
