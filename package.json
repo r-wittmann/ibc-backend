@@ -5,13 +5,15 @@
   "repository": "https://github.com/r-wittmann/ibc-backend.git",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "npm run migrate && npm run seed && nodemon index.js",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:latest",
+    "seed": "knex seed:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rainer Wittmann <r-wittmann@gmx.net>",
   "license": "UNLICENSED",
   "dependencies": {
-    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
