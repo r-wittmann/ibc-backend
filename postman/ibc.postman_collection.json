@@ -11,37 +11,6 @@
 			"description": "",
 			"item": [
 				{
-					"name": "initialize database",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\",\n    \"mother_company\": \"mother\",\n    \"website\": \"website\",\n    \"company_type\": \"type\",\n    \"person_of_contact\": \"Ray\",\n    \"email\": \"r-wittmann@gmx.net\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9090/admin/setup/nC3XDIqPl0t2gg5OGy5kfZM6jb6zjXQq4hkrncaiyQwbAoLI",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"admin",
-								"setup",
-								"nC3XDIqPl0t2gg5OGy5kfZM6jb6zjXQq4hkrncaiyQwbAoLI"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
 					"name": "login to admin account",
 					"event": [
 						{
@@ -49,7 +18,8 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"postman.setEnvironmentVariable(\"adminToken\", responseBody);"
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"adminToken\", jsonData.token);"
 								]
 							}
 						}
@@ -64,7 +34,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"admin\",\n    \"password\": \"L4V%nuv@*6g_mY9#\"\n}"
+							"raw": "{\n\t\"name\": \"admin\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/admin/authenticate",
@@ -117,41 +87,6 @@
 					"response": []
 				},
 				{
-					"name": "get account by id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-access-token",
-								"value": "{{adminToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9090/admin/accounts/4",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"admin",
-								"accounts",
-								"4"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
 					"name": "accept registration",
 					"request": {
 						"method": "PATCH",
@@ -170,7 +105,7 @@
 							"raw": "{\n\t\"name\": \"new user\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/6/accept",
+							"raw": "http://localhost:9090/admin/accounts/3/accept",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -179,7 +114,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"6",
+								"3",
 								"accept"
 							]
 						},
@@ -190,7 +125,7 @@
 				{
 					"name": "decline registration",
 					"request": {
-						"method": "DELETE",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -206,7 +141,7 @@
 							"raw": "{\n\t\"name\": \"new user\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/6/decline",
+							"raw": "http://localhost:9090/admin/accounts/4/decline",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -215,7 +150,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"6",
+								"4",
 								"decline"
 							]
 						},
@@ -226,39 +161,9 @@
 			]
 		},
 		{
-			"name": "api",
+			"name": "api - account",
 			"description": "",
 			"item": [
-				{
-					"name": "register account",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\",\n    \"mother_company\": \"mother\",\n    \"website\": \"website\",\n    \"company_type\": \"type\",\n    \"person_of_contact\": \"Ray\",\n    \"email\": \"r-wittmann@gmx.net\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9090/api/register",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"api",
-								"register"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
 				{
 					"name": "login to account",
 					"event": [
@@ -267,7 +172,8 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"postman.setEnvironmentVariable(\"userToken\", responseBody);"
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userToken\", jsonData.token);"
 								]
 							}
 						}
@@ -282,7 +188,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\",\n    \"password\": \"1\"\n}"
+							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/authenticate",
@@ -312,7 +218,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\"\n}"
+							"raw": "{\n\t\"name\": \"user1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/register/forgot",
@@ -381,7 +287,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new\",\n\t\"website\": \"newWebsite\",\n    \"person_of_contact\": \"Rainer\",\n    \"email\": \"r-wittmann@outlook.de\",\n    \"admin\": true\n}"
+							"raw": "{\n    \"email\": \"r-wittmann@outlook.de\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/account",
@@ -428,6 +334,466 @@
 								"api",
 								"account",
 								"password"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "register account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"new user\",\n    \"mother_company\": \"mother\",\n    \"email\": \"r-wittmann@gmx.net\",\n    \"company_type\": \"ibc\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"000000\",\n    \"address\": \"address\",\n    \"website\": \"www.mother.de\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api - companies",
+			"description": "",
+			"item": [
+				{
+					"name": "login to account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get companies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "create company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Awesome Company\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"017683268379\",\n    \"munich_address\": \"Biberger Straße 9a, 82008 Unterhaching\",\n    \"locations\": null,\n    \"employees\": 1,\n    \"website\": \"www.awesome.de\",\n    \"kununu\": null,\n    \"field_of_activity\": \"Media\",\n    \"logo\": null,\n    \"company_description\": \"\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get company by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/companies/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies",
+								"9"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "update company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"new\",\n    \"contact_name\": \"new\",\n    \"contact_email\": \"new\",\n    \"contact_phone\": \"new\",\n    \"munich_address\": \"new\",\n    \"locations\": null,\n    \"employees\": 2,\n    \"website\": \"new\",\n    \"kununu\": null,\n    \"field_of_activity\": \"new\",\n    \"logo\": null,\n    \"company_description\": \"\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/companies/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies",
+								"9"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete company",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/companies/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"companies",
+								"9"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api - recruiters",
+			"description": "",
+			"item": [
+				{
+					"name": "login to account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get recruiters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "create recruiter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recruiter_name\": \"Neuer Recruiter\",\n    \"recruiter_email\": \"neu@burda.de\",\n    \"phone\": \"00000\",\n    \"mobile\": \"00001\",\n    \"position\": \"HR-Generalist\",\n    \"location\": \"München\",\n    \"photo\": \"\",\n    \"xing\": \"xing.de/recruiter\",\n    \"linked_in\": \"linkedin.de/recruiter\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get recruiter by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								"1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "update recruiter",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"position\": \"HR Direktor\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								"1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete recruiter",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								"1"
 							]
 						},
 						"description": ""

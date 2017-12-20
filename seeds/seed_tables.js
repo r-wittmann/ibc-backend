@@ -115,5 +115,21 @@ exports.seed = function(knex) {
                     company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
                 }
             ])
+        }).then(function() {
+            return knex('t_recruiter').insert([
+                {
+                    id: 1,
+                    account_id: 2,
+                    recruiter_name: 'Rainer Wittmann',
+                    recruiter_email: 'r-wittmann@gmx.net',
+                    phone: '000000',
+                    mobile: '000001',
+                    position: 'Werkstudent',
+                    location: 'München',
+                    photo: '',
+                    xing: 'xing.de/rainer',
+                    linked_in: 'linkedin.de/rainer'
+                }
+            ])
         });
 };
