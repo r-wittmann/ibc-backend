@@ -16,7 +16,7 @@ module.exports = function(app, path) {
                 .then(([account]) => {
                     res.status(200).json(account)
                 })
-                .catch((err) => res.status(404).send('account not found'));
+                .catch((err) => res.status(400).json({ error: err }));
         });
 
     // update a account
@@ -28,12 +28,12 @@ module.exports = function(app, path) {
             delete(req.body.id);
             delete(req.body.name);
             delete(req.body.password);
-            delete(req.body.reg_accepted);
+            delete(req.body.status);
             delete(req.body.admin);
 
             Account.updateAccount(req.decodedToken.id, req.body)
-                .then(() => res.status(200).send('account updated'))
-                .catch((err) => res.status(404).send('account not found'));
+                .then(() => res.status(200).json({ message: 'account updated' }))
+                .catch((err) => res.status(400).json({ error: err }));
         });
 
     // change password
@@ -45,7 +45,7 @@ module.exports = function(app, path) {
             Account.getById(req.decodedToken.id)
                 .then(([account]) => {
                     if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.oldPassword).digest('hex')) {
-                        res.status(403).send('old password is wrong');
+                        res.status(403).json({ error: 'old password is wrong' });
                     } else {
                         let salt = crypto.randomBytes(4).toString('hex');
                         let hashedPassword = crypto.createHmac('sha512', salt).update(req.body.newPassword).digest('hex');
@@ -54,9 +54,10 @@ module.exports = function(app, path) {
                             password: hashedPassword
                         };
                         Account.updateAccount(account.id, updateObject)
-                            .then(() => res.status(200).send('password updated'))
-                            .catch((err) => res.status(400).send(err));
+                            .then(() => res.status(200).json({ message: 'password updated' }))
+                            .catch((err) => res.status(400).json({ error: err }));
                     }
-                });
+                })
+                .catch((err) => res.status(400).json({ error: err }));
         });
 };

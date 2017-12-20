@@ -4,36 +4,30 @@ module.exports = {
             .insert(company);
     },
 
-    getById(id) {
+    getByIdAndAccountId(id, account_id) {
         return knex('t_company')
-            .where({ id })
+            .where({ id, account_id });
     },
 
-    // getByIdWithSelect(id) {
-    //     return knex('t_account')
-    //         .where({ id })
-    //         .select(
-    //             'name',
-    //             'email',
-    //             'mother_company',
-    //             'company_type'
-    //         );
-    // },
-
-    // getByName(name) {
-    //     return knex('t_account')
-    //         .where({ name });
-    // },
-
-    updateCompany(id, updateObject) {
+    getByAccountIdWithSelect(account_id) {
         return knex('t_company')
-            .where({ id })
-            .update(updateObject);
+            .where({ account_id })
+            .select(
+                'id',
+                'company_name'
+            );
     },
 
-    deleteCompany(id) {
+    updateCompany(id, account_id, updateObject) {
         return knex('t_company')
-            .where({ id })
-            .del()
+            .where({ id, account_id })
+            .update(updateObject)
+            .update('updated_at', knex.fn.now());
+    },
+
+    deleteCompany(id, account_id) {
+        return knex('t_company')
+            .where({ id, account_id })
+            .del();
     }
 };

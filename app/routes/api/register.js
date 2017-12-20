@@ -35,9 +35,9 @@ module.exports = function(app, path) {
                     website: req.body.website
                 };
                 Company.createCompany(company)
-                    .then(() => res.status(201).json('account created'))
+                    .then(() => res.status(201).json({ message: 'account created' }))
                     .then(() => MailService.sendApprovalRequestedMail())
-                    .catch((err) => res.status(409).send(err))
+                    .catch((err) => res.status(409).json({ error: err }))
             })
 
     });
@@ -55,8 +55,8 @@ module.exports = function(app, path) {
             };
 
             Account.updateAccount(account.id, updateObject)
-                .then(() => res.status(200).send('new password created'))
+                .then(() => res.status(200).json({ message: 'new password created' }))
                 .then(() => MailService.sendNewPasswordMail(account.email, password));
-        }).catch(() => res.status(403).send('account doesn\'t exist'));
+        }).catch(() => res.status(403).json({ error: 'account doesn\'t exist' }));
     })
 };

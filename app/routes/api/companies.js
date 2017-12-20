@@ -1,100 +1,89 @@
 // private route to retrieve and update company details
 
+const Company = include('app/orm/companyMapper');
+const defaultCompany = include('app/models/defaultCompany');
+
 const validateToken = include('app/routes/api/validateToken');
 
 module.exports = function(app, path) {
 
-    // // create new company
-    // app.post(path,
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     function(req, res) {
-    //
-    //         let company = Object.assign({}, { owner: req.decodedToken.id }, req.body);
-    //
-    //         Company.create(company, function(err, company) {
-    //             if (err) res.status(500).send(err);
-    //             res.json({ success: true, id: company._id });
-    //         });
-    //     }
-    // );
-    //
-    // // get a list of companies (only email and id)
-    // app.get(path,
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     function(req, res) {
-    //         Company.find({}, function(err, companies) {
-    //
-    //             if (err) res.status(500).send(err);
-    //
-    //             res.json(companies
-    //                 .filter(company => company.owner === req.decodedToken.id)
-    //                 .map(company => ({
-    //                     name: company.name,
-    //                     _id: company._id
-    //                 }))
-    //             );
-    //         })
-    //     }
-    // );
-    //
-    // // get one company by id
-    // app.get(path + '/:id',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     function(req, res) {
-    //         Company.findById(req.params.id, function(err, company) {
-    //
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!company || company.owner !== req.decodedToken.id) {
-    //                 res.json({ success: false, message: 'Company not found' });
-    //             } else {
-    //                 res.json(company);
-    //             }
-    //         });
-    //     }
-    // );
-    //
-    // // update a company
-    // app.put(path + '/:id',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     function(req, res) {
-    //         Company.findByIdAndUpdate(req.params.id, req.body, { new: true }, function(err, company) {
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!company || company.owner !== req.decodedToken.id) {
-    //                 res.json({ success: false, message: 'Company not found' });
-    //             } else {
-    //                 res.json({ success: true, company });
-    //             }
-    //         });
-    //     }
-    // );
-    //
-    // // delete a company
-    // app.delete(path + '/:id',
-    //     function(req, res, next) {
-    //         validateToken(req, res, next, app);
-    //     },
-    //     function(req, res) {
-    //         Company.findByIdAndRemove(req.params.id, function(err, company) {
-    //             if (err) res.status(500).send(err);
-    //
-    //             if (!company || company.owner !== req.decodedToken.id) {
-    //                 res.json({ success: false, message: 'Company not found' });
-    //             } else {
-    //                 Posting.deleteMany({ company: req.params.id }, function(err) {
-    //                 });
-    //                 res.json({ success: true });
-    //             }
-    //         });
-    //     }
-    // );
+    // create new company
+    app.post(path,
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            let company = Object.assign(defaultCompany, { account_id: req.decodedToken.id }, req.body);
+
+            Company.createCompany(company)
+                .then(([id]) => res.status(201).json({ company_id: id }))
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
+
+    // get a list of companies (only company name and id) for a account id
+    app.get(path,
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.getByAccountIdWithSelect(req.decodedToken.id)
+                .then((companies) => res.status(200).json(companies))
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
+
+    // get one company by id
+    app.get(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.getByIdAndAccountId(req.params.id, req.decodedToken.id)
+                .then(([company]) => {
+                    if (!company) {
+                        res.status(404).json({ error: 'company not found' })
+                    } else {
+                        res.status(200).json(company);
+                    }
+                })
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
+
+    // update a company
+    app.put(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.updateCompany(req.params.id, req.decodedToken.id, req.body)
+                .then((affectedRows) => {
+                    if (affectedRows === 0) {
+                        res.status(404).json({ error: 'company not found' })
+                    } else {
+                        res.status(200).json({ message: 'company updated' });
+                    }
+                })
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
+
+    // delete a company
+    app.delete(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        function(req, res) {
+            Company.deleteCompany(req.params.id, req.decodedToken.id)
+                .then((affectedRows) => {
+                    if(affectedRows === 0) {
+                        res.status(404).json({ error: 'company not found' })
+                    } else {
+                        res.status(200).json({ message: 'company deleted' });
+                    }
+                })
+                .catch((err) => res.status(404).json({ error: err }));
+        }
+    );
 };

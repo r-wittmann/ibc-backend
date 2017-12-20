@@ -10,11 +10,11 @@ module.exports = function(app, path) {
         // find the account
         Account.getByName(req.body.name).then(([account]) => {
             if (!account) {
-                res.status(403).send('authentication failed. user doesn\'t exist or password is wrong');
+                res.status(403).json({ error: 'authentication failed. user doesn\'t exist or password is wrong' });
             } else if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.password).digest('hex')) {
-                res.status(403).send('authentication failed, user doesn\'t exist or password is wrong');
+                res.status(403).send({ error: 'authentication failed. user doesn\'t exist or password is wrong' });
             } else if (!account.admin) {
-                res.status(403).send('authentication failed, user is not an admin');
+                res.status(403).send({ error: 'authentication failed, user is not an admin' });
             } else {
                 let payload = {
                     id: account.id,
@@ -23,8 +23,8 @@ module.exports = function(app, path) {
                 };
                 let token = jwt.sign(payload, app.get('secret'), { expiresIn: '8h' });
 
-                // return the information including token as JSON
-                res.status(200).json(token);
+                // return the token as JSON
+                res.status(200).json({ token: token });
             }
         })
     })

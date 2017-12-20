@@ -42,7 +42,8 @@ module.exports = {
     updateAccount(id, updateObject) {
         return knex('t_account')
             .where({ id })
-            .update(updateObject);
+            .update(updateObject)
+            .update('updated_at', knex.fn.now());
     },
 
     deleteAccount(id) {

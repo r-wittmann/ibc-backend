@@ -4,6 +4,7 @@ const Account = include('app/orm/accountMapper');
 const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
 const MailService = include('app/mailService');
+const crypto = require('crypto');
 
 
 module.exports = function(app, path) {
@@ -25,7 +26,7 @@ module.exports = function(app, path) {
                     });
                     res.status(200).json(uniqueAccounts);
                 })
-                .catch((err) => res.status(400).send(err));
+                .catch((err) => res.status(400).json({ error: err }));
         });
 
     // accept the registration of a user
@@ -35,17 +36,23 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
+            let salt = crypto.randomBytes(4).toString('hex');
+            let password = crypto.randomBytes(8).toString('hex');
+            let hashedPassword = crypto.createHmac('sha512', salt).update(password).digest('hex');
+
             let updateObject = {
+                salt,
+                password: hashedPassword,
                 status: 'accepted'
             };
             Account.getById(req.params.id)
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
-                        .then(() => res.status(200).json({'message': 'registration accepted'}))
-                        .then(() => MailService.sendApprovalMail(account.email))
-                        .catch((err) => res.status(400).send(err));
+                        .then(() => res.status(200).json({ message: 'registration accepted' }))
+                        .then(() => MailService.sendNewPasswordMail(account.email, password))
+                        .catch((err) => res.status(400).json({ error: err }));
                 })
-                .catch((err) => res.status(404).send(err));
+                .catch((err) => res.status(404).send({ error: err }));
         });
 
     // decline the registration of a user
@@ -61,10 +68,10 @@ module.exports = function(app, path) {
             Account.getById(req.params.id)
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
-                        .then(() => res.status(200).json({'message': 'registration declined'}))
+                        .then(() => res.status(200).json({ message: 'registration declined' }))
                         // TODO: open mailTo in the frontend
-                        .catch((err) => res.status(400).send(err));
+                        .catch((err) => res.status(400).send({ error: err }));
                 })
-                .catch((err) => res.status(404).send(err));
+                .catch((err) => res.status(404).send({ error: err }));
         });
 };
