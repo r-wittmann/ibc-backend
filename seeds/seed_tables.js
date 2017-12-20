@@ -58,13 +58,13 @@ exports.seed = function(knex) {
                     contact_email: 'r-wittmann@gmx.net',
                     contact_phone: '017683268379',
                     munich_address: 'Biberger Straße 9a, 82008 Unterhaching',
-                    locations: null,
+                    locations: '',
                     employees: '1',
                     website: 'www.burda.de',
-                    kununu: null,
+                    kununu: '',
                     field_of_activity: 'Media',
-                    logo: null,
-                    company_description: ''
+                    logo: undefined,
+                    company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
                 },
                 {
                     id: 2,
@@ -74,13 +74,13 @@ exports.seed = function(knex) {
                     contact_email: 'r-wittmann@gmx.net',
                     contact_phone: '017683268379',
                     munich_address: 'Biberger Straße 9a, 82008 Unterhaching',
-                    locations: null,
+                    locations: '',
                     employees: '1',
                     website: 'www.xing.de',
-                    kununu: null,
+                    kununu: '',
                     field_of_activity: 'Social Network',
-                    logo: null,
-                    company_description: ''
+                    logo: undefined,
+                    company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
                 },
                 {
                     id: 3,
@@ -90,13 +90,13 @@ exports.seed = function(knex) {
                     contact_email: 'r-wittmann@gmx.net',
                     contact_phone: '017683268379',
                     munich_address: 'Biberger Straße 9a, 82008 Unterhaching',
-                    locations: null,
+                    locations: '',
                     employees: '1',
                     website: 'www.sapient.de',
-                    kununu: null,
+                    kununu: '',
                     field_of_activity: 'Unternehmen beraten',
-                    logo: null,
-                    company_description: ''
+                    logo: undefined,
+                    company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
                 },
                 {
                     id: 4,
@@ -106,13 +106,13 @@ exports.seed = function(knex) {
                     contact_email: 'r-wittmann@gmx.net',
                     contact_phone: '017683268379',
                     munich_address: 'Biberger Straße 9a, 82008 Unterhaching',
-                    locations: null,
+                    locations: '',
                     employees: '1',
                     website: 'www.bmw.de',
-                    kununu: null,
+                    kununu: '',
                     field_of_activity: 'Autos bauen',
-                    logo: null,
-                    company_description: ''
+                    logo: undefined,
+                    company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
                 }
             ])
         });
