@@ -44,6 +44,7 @@ module.exports = function(app, path) {
                     if (!company) {
                         res.status(404).json({ error: 'company not found' })
                     } else {
+                        company.logo = company.logo.toString();
                         res.status(200).json(company);
                     }
                 })
@@ -77,7 +78,7 @@ module.exports = function(app, path) {
         function(req, res) {
             Company.deleteCompany(req.params.id, req.decodedToken.id)
                 .then((affectedRows) => {
-                    if(affectedRows === 0) {
+                    if (affectedRows === 0) {
                         res.status(404).json({ error: 'company not found' })
                     } else {
                         res.status(200).json({ message: 'company deleted' });

@@ -10,7 +10,7 @@ exports.up = function(knex) {
         table.string('website').notNullable();
         table.string('kununu');
         table.string('field_of_activity');
-        table.string('logo');
+        table.specificType('logo', 'mediumblob').defaultTo(null);
         table.mediumtext('company_description');
         table.timestamps(false, true);
     });
