@@ -44,6 +44,7 @@ module.exports = function(app, path) {
                     if (!recruiter) {
                         res.status(404).json({ error: 'recruiter not found' })
                     } else {
+                        recruiter.photo = recruiter.photo.toString();
                         res.status(200).json(recruiter);
                     }
                 })

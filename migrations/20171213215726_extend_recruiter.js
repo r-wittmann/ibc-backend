@@ -6,7 +6,7 @@ exports.up = function(knex) {
         table.string('mobile');
         table.string('position').notNullable();
         table.string('location');
-        table.string('photo');
+        table.specificType('photo', 'mediumblob').defaultTo(null);
         table.string('xing');
         table.string('linked_in');
         table.timestamps(false, true);
