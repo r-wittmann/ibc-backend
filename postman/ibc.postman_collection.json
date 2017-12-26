@@ -465,7 +465,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Awesome Company\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"017683268379\",\n    \"munich_address\": \"Biberger Straße 9a, 82008 Unterhaching\",\n    \"locations\": null,\n    \"employees\": 1,\n    \"website\": \"www.awesome.de\",\n    \"kununu\": null,\n    \"field_of_activity\": \"Media\",\n    \"logo\": null,\n    \"company_description\": \"\"\n}"
+							"raw": "{\n    \"company_name\": \"Awesome Company\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"017683268379\",\n    \"munich_address\": \"Biberger Straße 9a, 82008 Unterhaching\",\n    \"locations\": null,\n    \"employees\": 1,\n    \"website\": \"www.awesome.de\",\n    \"kununu\": null,\n    \"field_of_activity\": \"Media\",\n    \"logo\": null,\n    \"company_description\": \"{\\\"entityMap\\\":{},\\\"blocks\\\":[{\\\"key\\\":\\\"1hf1m\\\",\\\"text\\\":\\\"\\\",\\\"type\\\":\\\"unstyled\\\",\\\"depth\\\":0,\\\"inlineStyleRanges\\\":[],\\\"entityRanges\\\":[],\\\"data\\\":{}}]}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/companies",
