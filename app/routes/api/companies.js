@@ -44,7 +44,7 @@ module.exports = function(app, path) {
                     if (!company) {
                         res.status(404).json({ error: 'company not found' })
                     } else {
-                        company.logo = company.logo.toString();
+                        company.logo = company.logo ? company.logo.toString() : null;
                         res.status(200).json(company);
                     }
                 })
