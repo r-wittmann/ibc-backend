@@ -5,12 +5,12 @@ exports.up = function(knex) {
         table.string('contact_email').notNullable();
         table.string('contact_phone').notNullable();
         table.string('munich_address').notNullable();
-        table.string('locations');
-        table.integer('employees');
+        table.string('locations').defaultTo('');
+        table.integer('employees').defaultTo(1);
         table.string('website').notNullable();
-        table.string('kununu');
-        table.string('field_of_activity');
-        table.specificType('logo', 'mediumblob').defaultTo(null);
+        table.string('kununu').defaultTo('');
+        table.string('field_of_activity').defaultTo('');
+        table.specificType('logo', 'mediumblob');
         table.mediumtext('company_description');
         table.timestamps(false, true);
     });

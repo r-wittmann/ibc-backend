@@ -2,6 +2,7 @@
 
 const Account = include('app/orm/accountMapper');
 const Company = include('app/orm/companyMapper');
+const defaultCompany = include('app/models/defaultCompany');
 const MailService = include('app/mailService');
 const crypto = require('crypto');
 
@@ -32,7 +33,8 @@ module.exports = function(app, path) {
                     contact_email: req.body.contact_email,
                     contact_phone: req.body.contact_phone,
                     munich_address: req.body.address,
-                    website: req.body.website
+                    website: req.body.website,
+                    company_description: defaultCompany.company_description
                 };
                 Company.createCompany(company)
                     .then(() => res.status(201).json({ message: 'account created' }))

@@ -13,5 +13,5 @@ module.exports =
         kununu: null,
         field_of_activity: '',
         logo: null,
-        company_description: ''
+        company_description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}"
     };
