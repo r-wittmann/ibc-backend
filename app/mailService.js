@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
     secure: false, // true for 465, false for other ports
     auth: {
         user: 'ibc.job.portal@gmail.com',
-        pass: 'ibc.job.'
+        pass: 'ibc-job-portal'
     }
 });
 
