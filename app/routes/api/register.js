@@ -8,6 +8,18 @@ const crypto = require('crypto');
 
 module.exports = function(app, path) {
 
+    app.post(path + '/check-username', function(req, res) {
+        Account.getByName(req.body.name)
+            .then(([account]) => {
+                if (account) {
+                    res.status(400).json({ error: 'username already exists' });
+                } else {
+                    res.status(200).json({ message: 'username is ok' });
+                }
+            })
+            .catch((err) => res.status(400).json({ error: err }));
+    });
+
     app.post(path, function(req, res) {
 
         let salt = crypto.randomBytes(4).toString('hex');
