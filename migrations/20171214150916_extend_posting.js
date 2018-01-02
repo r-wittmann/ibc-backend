@@ -11,7 +11,7 @@ exports.up = function(knex) {
         table.string('field_of_employment');
         table.boolean('pdf').notNullable();
         table.string('status').notNullable();
-        table.string('description').notNullable();
+        table.mediumtext('description').notNullable();
         table.string('expiry_date').notNullable();
         table.timestamps(false, true);
     });
