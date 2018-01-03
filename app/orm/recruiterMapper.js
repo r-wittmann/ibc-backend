@@ -11,11 +11,15 @@ module.exports = {
 
     getByAccountIdWithSelect(account_id) {
         return knex('t_recruiter')
-            .where({ account_id })
+            .leftJoin('t_posting', 't_recruiter.id', 't_posting.recruiter_id')
+            .where({ 't_recruiter.account_id': account_id })
             .select(
-                'id',
-                'recruiter_name'
-            );
+                't_recruiter.id',
+                't_recruiter.recruiter_name',
+                't_posting.status'
+            )
+            .groupBy('t_recruiter.id', 't_posting.status')
+            .count('t_posting.status as count').debug();
     },
 
     updateRecruiter(id, account_id, updateObject) {

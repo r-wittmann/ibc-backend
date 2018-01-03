@@ -11,11 +11,15 @@ module.exports = {
 
     getByAccountIdWithSelect(account_id) {
         return knex('t_company')
-            .where({ account_id })
+            .leftJoin('t_posting', 't_company.id', 't_posting.company_id')
+            .where({ 't_company.account_id': account_id })
             .select(
-                'id',
-                'company_name'
-            );
+                't_company.id',
+                't_company.company_name',
+                't_posting.status'
+            )
+            .groupBy('t_company.id', 't_posting.status')
+            .count('t_posting.status as count').debug();
     },
 
     updateCompany(id, account_id, updateObject) {
