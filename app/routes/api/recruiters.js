@@ -28,10 +28,7 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Recruiter.getByAccountIdWithSelect(req.decodedToken.id)
-                .then((recruiters) => {
-                    let responseObject = recruiters.filter(recruiter => recruiter.status !== 'deactivated');
-                    res.status(200).json(responseObject);
-                })
+                .then((recruiters) => res.status(200).json(recruiters))
                 .catch((err) => res.status(400).json({ error: err }));
         }
     );

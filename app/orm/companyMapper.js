@@ -11,12 +11,14 @@ module.exports = {
 
     getByAccountIdWithSelect(account_id) {
         return knex('t_company')
-            .leftJoin('t_posting', 't_company.id', 't_posting.company_id')
+            .leftJoin('t_posting', function() {
+                this.on('t_company.id', '=', 't_posting.company_id')
+                    .andOn('t_posting.status', '=', knex.raw('?', ['active']))
+            })
             .where({ 't_company.account_id': account_id })
             .select(
                 't_company.id',
-                't_company.company_name',
-                't_posting.status'
+                't_company.company_name'
             )
             .groupBy('t_company.id', 't_posting.status')
             .count('t_posting.status as count');
