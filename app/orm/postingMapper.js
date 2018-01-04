@@ -9,17 +9,18 @@ module.exports = {
             .where({ id, account_id });
     },
 
-    getByAccountIdWithSelect(account_id) {
+    getByAccountIdWithSelect(account_id, filters) {
+        console.log(filters);
         return knex('t_posting')
             .leftJoin('t_company', 't_posting.company_id', 't_company.id')
-            .where({ 't_posting.account_id': account_id })
+            .where({ 't_posting.account_id': account_id, ...filters })
             .select(
                 't_posting.id',
                 't_posting.title',
                 't_posting.status',
                 't_posting.expiry_date',
                 't_company.company_name'
-            );
+            ).orderBy('t_posting.created_at', 'desc').debug();
     },
 
     updatePosting(id, account_id, updateObject) {

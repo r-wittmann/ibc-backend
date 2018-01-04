@@ -19,7 +19,7 @@ module.exports = {
                 't_posting.status'
             )
             .groupBy('t_company.id', 't_posting.status')
-            .count('t_posting.status as count').debug();
+            .count('t_posting.status as count');
     },
 
     updateCompany(id, account_id, updateObject) {

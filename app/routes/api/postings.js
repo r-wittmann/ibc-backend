@@ -27,19 +27,17 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            Posting.getByAccountIdWithSelect(req.decodedToken.id)
-                .then((postings) => res.status(200).json(postings))
+            let filters = [];
+            for (let key in req.query) {
+                if (req.query.hasOwnProperty(key) && defaultPosting.hasOwnProperty(key)) {
+                    filters[`t_posting.${key}`] = req.query[key];
+                }
+            }
+            Posting.getByAccountIdWithSelect(req.decodedToken.id, filters)
+                .then((postings) => {
+                    res.status(200).json(postings);
+                })
                 .catch((err) => res.status(400).json({ error: err }));
-
-            //TODO: implement filtering
-            // // if there are query parameters, iterate over them,
-            // // check if they are actually fields of postings and than filter for the provided value
-            // for (let key in req.query) {
-            //     if (req.query.hasOwnProperty(key) && key in postings[0]) {
-            //         console.log(key, ':', req.query[key]);
-            //         postings = postings.filter(posting => posting[key] === req.query[key]);
-            //     }
-            // }
         }
     );
 

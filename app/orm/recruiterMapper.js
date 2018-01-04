@@ -19,7 +19,7 @@ module.exports = {
                 't_posting.status'
             )
             .groupBy('t_recruiter.id', 't_posting.status')
-            .count('t_posting.status as count').debug();
+            .count('t_posting.status as count');
     },
 
     updateRecruiter(id, account_id, updateObject) {
