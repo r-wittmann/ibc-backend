@@ -151,6 +151,44 @@ exports.seed = function(knex) {
                     status: 'active',
                     description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}",
                     expiry_date: ''
+                },
+                {
+                    id: 2,
+                    account_id: 2,
+                    company_id: 1,
+                    recruiter_id: 1,
+                    title: 'Direkteinstieg Digitales Marketing',
+                    start_of_employment: 'ab sofort',
+                    contract_type: 'Direkteinstieg',
+                    contract_duration: 'indefinite',
+                    working_hours: 'Vollzeit',
+                    entry_level: 'Absolventen',
+                    place_of_employment: 'München',
+                    application_link: 'http://www.application.link',
+                    field_of_employment: 'Digital Marketing',
+                    pdf: false,
+                    status: 'active',
+                    description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}",
+                    expiry_date: ''
+                },
+                {
+                    id: 3,
+                    account_id: 2,
+                    company_id: 2,
+                    recruiter_id: 1,
+                    title: 'Direkteinstieg Digitales Marketing',
+                    start_of_employment: 'ab sofort',
+                    contract_type: 'Direkteinstieg',
+                    contract_duration: 'indefinite',
+                    working_hours: 'Vollzeit',
+                    entry_level: 'Absolventen',
+                    place_of_employment: 'München',
+                    application_link: 'http://www.application.link',
+                    field_of_employment: 'Digital Marketing',
+                    pdf: false,
+                    status: 'deactivated',
+                    description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}",
+                    expiry_date: ''
                 }
             ])
         });
