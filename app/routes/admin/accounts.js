@@ -27,7 +27,27 @@ module.exports = function(app, path) {
                     res.status(200).json(uniqueAccounts);
                 })
                 .catch((err) => res.status(400).json({ error: err }));
-        });
+        }
+    );
+
+    // update an account
+    app.patch(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            Account.updateAccount(req.params.id, req.body)
+                .then((affectedRows) => {
+                    if (affectedRows === 0) {
+                        res.status(404).json({ error: 'account not found' })
+                    } else {
+                        res.status(200).json({ message: 'account updated' });
+                    }
+                })
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
 
     // accept the registration of a user
     app.patch(path + '/:id/accept',
@@ -43,7 +63,8 @@ module.exports = function(app, path) {
             let updateObject = {
                 salt,
                 password: hashedPassword,
-                status: 'accepted'
+                status: 'accepted',
+                company_type: req.body.company_type
             };
             Account.getById(req.params.id)
                 .then(([account]) => {
@@ -53,7 +74,8 @@ module.exports = function(app, path) {
                         .catch((err) => res.status(400).json({ error: err }));
                 })
                 .catch((err) => res.status(404).send({ error: err }));
-        });
+        }
+    );
 
     // decline the registration of a user
     app.patch(path + '/:id/decline',
@@ -69,9 +91,28 @@ module.exports = function(app, path) {
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
                         .then(() => res.status(200).json({ message: 'registration declined' }))
-                        // TODO: open mailTo in the frontend
                         .catch((err) => res.status(400).send({ error: err }));
                 })
                 .catch((err) => res.status(404).send({ error: err }));
-        });
+        }
+    );
+
+    // delete an account
+    app.delete(path + '/:id',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            Account.deleteAccount(req.params.id)
+                .then((affectedRows) => {
+                    if (affectedRows === 0) {
+                        res.status(404).json({ error: 'account not found' })
+                    } else {
+                        res.status(200).json({ message: 'account deleted' });
+                    }
+                })
+                .catch((err) => res.status(404).json({ error: err }));
+        }
+    );
 };
