@@ -27,14 +27,26 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
-            let filters = [];
-            for (let key in req.query) {
-                if (req.query.hasOwnProperty(key) && defaultPosting.hasOwnProperty(key)) {
-                    filters[`t_posting.${key}`] = req.query[key];
-                }
-            }
-            Posting.getByAccountIdWithSelect(req.decodedToken.id, filters)
+            let filters = req.query;
+            Posting.getByAccountIdWithSelect(req.decodedToken.id)
                 .then((postings) => {
+                    // iterate over query parameters, check, if they are valid parameters for filtering and than
+                    // filter for them on the postings array
+                    for (let key in filters) {
+                        if (filters.hasOwnProperty(key) && defaultPosting.hasOwnProperty(key)) {
+                            // with a request url of .../postings?company_id=1&company_id=2 the respective query
+                            // parameter is an array of strings, which will not correctly compare to the int of
+                            // the company_id in the postings object. Therefor we must parse them to int. As a
+                            // query for one company_id corresponds to a query parameter of type string we need
+                            // to check that also in the if clause.
+                            // The same issue arises from querying for specific recruiter_ids
+                            if ((key === 'company_id' && filters[key] instanceof Array) ||
+                                key === 'recruiter_id' && filters[key] instanceof Array) {
+                                filters[key] = filters[key].map(e => parseInt(e));
+                            }
+                            postings = postings.filter(posting => filters[key].includes(posting[key]));
+                        }
+                    }
                     res.status(200).json(postings);
                 })
                 .catch((err) => res.status(400).json({ error: err }));
