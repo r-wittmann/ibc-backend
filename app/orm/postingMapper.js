@@ -12,6 +12,7 @@ module.exports = {
     getByAccountIdWithSelect(account_id) {
         return knex('t_posting')
             .leftJoin('t_company', 't_posting.company_id', 't_company.id')
+            .leftJoin('t_recruiter', 't_posting.recruiter_id', 't_recruiter.id')
             .where({ 't_posting.account_id': account_id })
             .select(
                 't_posting.id',
@@ -22,7 +23,8 @@ module.exports = {
                 't_posting.expiry_date',
                 't_posting.contract_type',
                 't_posting.entry_level',
-                't_company.company_name'
+                't_company.company_name',
+                't_recruiter.recruiter_name'
             ).orderBy('t_posting.created_at', 'desc');
     },
 
