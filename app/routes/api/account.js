@@ -45,7 +45,7 @@ module.exports = function(app, path) {
             Account.getById(req.decodedToken.id)
                 .then(([account]) => {
                     if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.oldPassword).digest('hex')) {
-                        res.status(403).json({ error: 'old password is wrong' });
+                        res.status(401).json({ error: 'old password is wrong' });
                     } else {
                         let salt = crypto.randomBytes(4).toString('hex');
                         let hashedPassword = crypto.createHmac('sha512', salt).update(req.body.newPassword).digest('hex');
