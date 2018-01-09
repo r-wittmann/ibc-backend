@@ -157,6 +157,76 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "update account",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"new@email.de\",\n    \"company_type\": \"ngo\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/admin/accounts/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"admin",
+								"accounts",
+								"3"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete Account",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/admin/accounts/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"admin",
+								"accounts",
+								"4"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -200,37 +270,6 @@
 							"path": [
 								"api",
 								"authenticate"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "forgot password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9090/api/register/forgot",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"api",
-								"register",
-								"forgot"
 							]
 						},
 						"description": ""
@@ -364,6 +403,37 @@
 							"path": [
 								"api",
 								"register"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"user1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/register/forgot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"register",
+								"forgot"
 							]
 						},
 						"description": ""
@@ -714,7 +784,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/1",
+							"raw": "http://localhost:9090/api/recruiters/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -723,7 +793,7 @@
 							"path": [
 								"api",
 								"recruiters",
-								"1"
+								"5"
 							]
 						},
 						"description": ""
@@ -749,7 +819,7 @@
 							"raw": "{\n    \"position\": \"HR Direktor\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/1",
+							"raw": "http://localhost:9090/api/recruiters/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -758,7 +828,7 @@
 							"path": [
 								"api",
 								"recruiters",
-								"1"
+								"5"
 							]
 						},
 						"description": ""
@@ -794,6 +864,170 @@
 								"api",
 								"recruiters",
 								"1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api - postings",
+			"description": "",
+			"item": [
+				{
+					"name": "login to account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get all postings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/postings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"postings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get posting by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/postings/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"postings",
+								"1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "get all filtered postings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9090/api/postings?company_id=1&company_id=2&contract_type=Werkstudent&blub=bla",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"postings"
+							],
+							"query": [
+								{
+									"key": "company_id",
+									"value": "1",
+									"equals": true
+								},
+								{
+									"key": "company_id",
+									"value": "2",
+									"equals": true
+								},
+								{
+									"key": "contract_type",
+									"value": "Werkstudent",
+									"equals": true
+								},
+								{
+									"key": "blub",
+									"value": "bla",
+									"equals": true
+								}
 							]
 						},
 						"description": ""
