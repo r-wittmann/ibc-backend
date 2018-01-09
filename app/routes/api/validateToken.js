@@ -11,7 +11,7 @@ module.exports = function(req, res, next, app) {
             if (err) {
                 return res.status(403).json({ error: 'Failed to authenticate token.' });
             } else {
-                // if everything is good, save to request for use in other routes
+                // if everything is good, save decoded token as parameter to the request for later use
                 req.decodedToken = decoded;
                 next();
             }

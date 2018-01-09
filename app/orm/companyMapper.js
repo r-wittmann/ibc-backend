@@ -1,3 +1,6 @@
+// Object Relational Mapper for the company table
+// implements all CRUD endpoints and additional helper methods
+
 module.exports = {
     createCompany(company) {
         return knex('t_company')
@@ -9,6 +12,9 @@ module.exports = {
             .where({ id, account_id });
     },
 
+    // this method does a left join of t_company with t_posting on the company id
+    // to display the number of active posts in the frontend. Therefore we additionally filter
+    // for the posting status to be active and do a count afterwards
     getByAccountIdWithSelect(account_id) {
         return knex('t_company')
             .leftJoin('t_posting', function() {

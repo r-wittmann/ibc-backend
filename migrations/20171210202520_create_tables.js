@@ -1,3 +1,6 @@
+// knex migration
+// creates all tables with primary and foreign keys to connect the tables
+
 exports.up = function(knex) {
     return knex.schema
         .createTableIfNotExists('t_account', function(table) {

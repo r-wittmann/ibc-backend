@@ -1,3 +1,5 @@
+// this script adds all routes to the api
+
 module.exports = function(app) {
     const basePath = 'app/routes/';
 

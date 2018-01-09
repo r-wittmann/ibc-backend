@@ -1,4 +1,5 @@
 // private route to retrieve a list of job postings or a single one by id
+// route: .../api/postings
 
 const Posting = include('app/orm/postingMapper');
 const defaultPosting = include('app/models/defaultPosting');
@@ -21,7 +22,8 @@ module.exports = function(app, path) {
         }
     );
 
-    // get a list of job postings (only id, title, status, expiry_date)
+    // get a list of job postings
+    // only id, company_id, recruiter_id, title, status, expiry_date, contract_type, entry_level, company_name, recruiter_name
     app.get(path,
         function(req, res, next) {
             validateToken(req, res, next, app);

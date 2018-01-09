@@ -1,3 +1,6 @@
+// knex seed file
+// adds test data to the database (including the admin user)
+
 exports.seed = function(knex) {
     // Deletes ALL existing entries
     return knex('t_account').del()

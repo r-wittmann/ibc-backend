@@ -3,7 +3,7 @@ const app = express(); // start express
 const bodyParser = require('body-parser'); // used to parse request bodies
 const morgan = require('morgan'); // http logger library
 const cors = require('cors'); // cors header for requests
-const knex = require('knex')(require('./knexfile'));
+const knex = require('knex')(require('./knexfile')); // mySQL javascript wrapper
 
 const config = require('./config'); // get the config file
 
@@ -18,11 +18,13 @@ app.set('secret', config.secret); // secret variable for jwt tokens
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
+// make knex globally accessible
 global.knex = knex;
 
 // use morgan to log requests to the console
 app.use(morgan('dev'));
 
+// helper method to require files with an absolute path
 global.base_dir = '.';
 global.abs_path = function(path) {
     return base_dir + path;

@@ -1,3 +1,6 @@
+// knex migration
+// adds all needed columns to the recruiter table
+
 exports.up = function(knex) {
     return knex.schema.table('t_recruiter', function(table) {
         table.string('recruiter_name').notNullable();

@@ -1,3 +1,6 @@
+// knex migration
+// adds all needed columns to the account table
+
 exports.up = function(knex) {
     return knex.schema.table('t_account', function(table) {
         table.string('name').notNullable().unique();

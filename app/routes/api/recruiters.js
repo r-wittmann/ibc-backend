@@ -1,4 +1,5 @@
 // private route to retrieve a list of recruiters or a single on by id
+// route: .../api/recruiters
 
 const Recruiter = include('app/orm/recruiterMapper');
 const defaultRecruiter = include('app/models/defaultRecruiter');

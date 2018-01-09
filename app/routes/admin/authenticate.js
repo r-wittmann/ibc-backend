@@ -1,4 +1,5 @@
-// admin route to retrieve a jwt token in exchange for email and password
+// admin route to retrieve a jwt token in exchange for username and password
+// route: .../admin/authenticate
 
 const Account = include('app/orm/accountMapper');
 const crypto = require('crypto');
@@ -10,10 +11,13 @@ module.exports = function(app, path) {
         // find the account
         Account.getByName(req.body.name).then(([account]) => {
             if (!account) {
+                // username doesn't exist
                 res.status(403).json({ error: 'authentication failed. user doesn\'t exist or password is wrong' });
             } else if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.password).digest('hex')) {
+                // password is incorrect
                 res.status(403).send({ error: 'authentication failed. user doesn\'t exist or password is wrong' });
             } else if (!account.admin) {
+                // username and password are correct but the user is not an admin
                 res.status(403).send({ error: 'authentication failed, user is not an admin' });
             } else {
                 let payload = {

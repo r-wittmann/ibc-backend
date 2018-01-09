@@ -1,7 +1,7 @@
 module.exports =
     defaultCompany = {
         // id
-        // account_id
+        account_id: '',
         recruiter_name: '',
         recruiter_email: '',
         phone: '',

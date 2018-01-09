@@ -1,3 +1,6 @@
+// Object Relational Mapper for the posting table
+// implements all CRUD endpoints and additional helper methods
+
 module.exports = {
     createPosting(posting) {
         return knex('t_posting')
@@ -9,6 +12,7 @@ module.exports = {
             .where({ id, account_id });
     },
 
+    // join of postings with the respective company and recruiter
     getByAccountIdWithSelect(account_id) {
         return knex('t_posting')
             .leftJoin('t_company', 't_posting.company_id', 't_company.id')

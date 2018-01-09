@@ -1,3 +1,6 @@
+// knex migration
+// adds all needed columns to the posting table
+
 exports.up = function(knex) {
     return knex.schema.table('t_posting', function(table) {
         table.string('title').notNullable();

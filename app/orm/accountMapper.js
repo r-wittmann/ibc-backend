@@ -1,3 +1,6 @@
+// Object Relational Mapper for the account table
+// implements all CRUD endpoints and additional helper methods
+
 module.exports = {
     createAccount(account) {
         return knex('t_account')

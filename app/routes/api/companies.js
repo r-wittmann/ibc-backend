@@ -1,4 +1,5 @@
 // private route to retrieve and update company details
+// route: .../api/companies
 
 const Company = include('app/orm/companyMapper');
 const defaultCompany = include('app/models/defaultCompany');

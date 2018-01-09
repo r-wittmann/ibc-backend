@@ -1,4 +1,5 @@
-// api route to register a users
+// api route to register an account
+// route: ../api/register
 
 const Account = include('app/orm/accountMapper');
 const Company = include('app/orm/companyMapper');
@@ -8,6 +9,7 @@ const crypto = require('crypto');
 
 module.exports = function(app, path) {
 
+    // check, if a username is already taken
     app.post(path + '/check-username', function(req, res) {
         Account.getByName(req.body.name)
             .then(([account]) => {
@@ -20,8 +22,11 @@ module.exports = function(app, path) {
             .catch((err) => res.status(400).json({ error: err }));
     });
 
+    // register an account (creates an account and a company)
     app.post(path, function(req, res) {
 
+        // as a password is created for the account once an admin accepts the registration,
+        // we save a dummy password to the database which can't be used to login
         let salt = crypto.randomBytes(4).toString('hex');
         let password = 'dummyPassword';
 
@@ -56,6 +61,7 @@ module.exports = function(app, path) {
 
     });
 
+    // endpoint to create a new password for an account
     app.post(path + '/forgot', function(req, res) {
 
         let salt = crypto.randomBytes(4).toString('hex');

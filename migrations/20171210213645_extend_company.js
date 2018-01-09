@@ -1,3 +1,6 @@
+// knex migration
+// adds all needed columns to the company table
+
 exports.up = function(knex) {
     return knex.schema.table('t_company', function(table) {
         table.string('company_name').notNullable();

@@ -1,4 +1,5 @@
 // private route to retrieve and update company details
+// route: .../api/account
 
 const Account = include('app/orm/accountMapper');
 const validateToken = include('app/routes/api/validateToken');
@@ -25,6 +26,7 @@ module.exports = function(app, path) {
             validateToken(req, res, next, app);
         },
         function(req, res) {
+            // remove attributes which can't be updated (at this endpoint)
             delete(req.body.id);
             delete(req.body.name);
             delete(req.body.password);
@@ -47,6 +49,7 @@ module.exports = function(app, path) {
                     if (account.password !== crypto.createHmac('sha512', account.salt).update(req.body.oldPassword).digest('hex')) {
                         res.status(401).json({ error: 'old password is wrong' });
                     } else {
+                        // generate a new salt and hash the new password before saving both to the database
                         let salt = crypto.randomBytes(4).toString('hex');
                         let hashedPassword = crypto.createHmac('sha512', salt).update(req.body.newPassword).digest('hex');
                         let updateObject = {

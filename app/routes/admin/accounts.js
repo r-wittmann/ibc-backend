@@ -1,4 +1,5 @@
-// admin route to retrieve users and manage them
+// admin route to retrieve accounts and manage them
+// route: .../admin/accounts
 
 const Account = include('app/orm/accountMapper');
 const validateToken = include('app/routes/api/validateToken');
@@ -22,6 +23,8 @@ module.exports = function(app, path) {
                     // remove the calling admin user
                     accounts = accounts.filter(account => account.id !== req.decodedToken.id);
                     // only get the first occurrence of each account id
+                    // because we do a join of the account table with the company table and each account can have
+                    // multiple companies, each account can be in this list multiple times.
                     let uniqueAccounts = accounts.filter(function(account, index, self) {
                         return self.findIndex(a => a.id === account.id) === index;
                     });
@@ -64,6 +67,8 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
+            // generate a random password for the account which is sent to the user via email
+            // this replaces the 'verify email' step in the registration process
             let salt = crypto.randomBytes(4).toString('hex');
             let password = crypto.randomBytes(8).toString('hex');
             let hashedPassword = crypto.createHmac('sha512', salt).update(password).digest('hex');
@@ -99,6 +104,7 @@ module.exports = function(app, path) {
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
                         .then(() => res.status(200).json({ message: 'registration declined' }))
+                        // no need to send an email here because the mail application is opened on client side
                         .catch((err) => res.status(400).send({ error: err }));
                 })
                 .catch((err) => res.status(404).send({ error: err }));
