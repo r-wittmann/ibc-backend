@@ -16,6 +16,7 @@ module.exports = function(app, path) {
         },
         validateAdminToken,
         function(req, res) {
+            let filters = req.query;
             Account.getAllAccountsForAdmin()
                 .then((accounts) => {
                     // remove the calling admin user
@@ -24,6 +25,13 @@ module.exports = function(app, path) {
                     let uniqueAccounts = accounts.filter(function(account, index, self) {
                         return self.findIndex(a => a.id === account.id) === index;
                     });
+                    // iterate over query parameters, check, if they are valid parameters for filtering and than
+                    // filter for them on the account array
+                    for (let key in filters) {
+                        if (filters.hasOwnProperty(key) && (key === 'status' || key === 'company_type')) {
+                            uniqueAccounts = uniqueAccounts.filter(account => filters[key].includes(account[key]));
+                        }
+                    }
                     res.status(200).json(uniqueAccounts);
                 })
                 .catch((err) => res.status(400).json({ error: err }));
