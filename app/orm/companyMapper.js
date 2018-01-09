@@ -7,6 +7,22 @@ module.exports = {
             .insert(company);
     },
 
+    // used for the filter dropdown in the public list of postings
+    getPublicActiveCompanies() {
+        return knex('t_company')
+            .leftJoin('t_posting', 't_company.id', 't_posting.company_id')
+            .where('t_posting.status', '=', knex.raw('?', ['active']))
+            .select(
+                't_company.id',
+                't_company.company_name'
+            )
+    },
+
+    getPublicById(id) {
+        return knex('t_company')
+            .where({ id });
+    },
+
     getByIdAndAccountId(id, account_id) {
         return knex('t_company')
             .where({ id, account_id });
