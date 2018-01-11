@@ -38,6 +38,11 @@ module.exports = {
     },
 
     getByName(name) {
+        if (name instanceof Array) {
+            return knex('t_account')
+                .whereIn('name', name)
+                .orderBy('id', 'desc');
+        }
         return knex('t_account')
             .where({ name });
     },
