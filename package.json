@@ -5,7 +5,7 @@
   "repository": "https://github.com/r-wittmann/ibc-backend.git",
   "main": "index.js",
   "scripts": {
-    "deploy": "cf login -a https://api.run.pivotal.io -s development -u r-wittmann@outlook.de -p IBC-portal1 && cf push ibc-backend -c \"npm run migrate && npm run seed && node index.js\" -m 256M",
+    "deploy": "cf login -a https://api.run.pivotal.io -s development -u r-wittmann@outlook.de -p IBC-portal1 && cf push ibc-backend -c \"npm run migrate && node index.js\" -m 256M",
     "dev": "npm run migrate && npm run seed && nodemon index.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
