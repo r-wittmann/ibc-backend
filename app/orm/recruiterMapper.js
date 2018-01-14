@@ -17,17 +17,15 @@ module.exports = {
     // for the posting status to be active and do a count afterwards
     getByAccountIdWithSelect(account_id) {
         return knex('t_recruiter')
-            .leftJoin('t_posting', function() {
-                this.on('t_recruiter.id', '=', 't_posting.recruiter_id')
-                    .andOn('t_posting.status', '=', knex.raw('?', ['active']))
-            })
+            .leftJoin('t_posting', 't_recruiter.id', 't_posting.recruiter_id')
             .where({ 't_recruiter.account_id': account_id })
             .select(
                 't_recruiter.id',
                 't_recruiter.recruiter_name'
             )
-            .groupBy('t_recruiter.id', 't_posting.status')
-            .count('t_posting.status as count');
+            .groupBy('t_recruiter.id')
+            .count('t_recruiter.id as totalCount')
+            .sum(knex.raw('?? = ?', ['t_posting.status', 'active']));
     },
 
     updateRecruiter(id, account_id, updateObject) {

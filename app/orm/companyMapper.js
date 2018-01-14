@@ -29,21 +29,18 @@ module.exports = {
     },
 
     // this method does a left join of t_company with t_posting on the company id
-    // to display the number of active posts in the frontend. Therefore we additionally filter
-    // for the posting status to be active and do a count afterwards
+    // to display the number of posts in the frontend.
     getByAccountIdWithSelect(account_id) {
         return knex('t_company')
-            .leftJoin('t_posting', function() {
-                this.on('t_company.id', '=', 't_posting.company_id')
-                    .andOn('t_posting.status', '=', knex.raw('?', ['active']))
-            })
+            .leftJoin('t_posting', 't_company.id', 't_posting.company_id')
             .where({ 't_company.account_id': account_id })
             .select(
                 't_company.id',
                 't_company.company_name'
             )
-            .groupBy('t_company.id', 't_posting.status')
-            .count('t_posting.status as count');
+            .groupBy('t_company.id')
+            .count('t_company.id as totalCount')
+            .sum(knex.raw('?? = ?', ['t_posting.status', 'active']));
     },
 
     updateCompany(id, account_id, updateObject) {

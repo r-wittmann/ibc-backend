@@ -29,7 +29,10 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Company.getByAccountIdWithSelect(req.decodedToken.id)
-                .then((companies) => res.status(200).json(companies))
+                .then((companies) => {
+                    companies.map(company => company['activeCount'] = company['sum(`t_posting`.`status` = \'active\')']);
+                    res.status(200).json(companies);
+                })
                 .catch((err) => res.status(400).json({ error: err }));
         }
     );

@@ -29,7 +29,10 @@ module.exports = function(app, path) {
         },
         function(req, res) {
             Recruiter.getByAccountIdWithSelect(req.decodedToken.id)
-                .then((recruiters) => res.status(200).json(recruiters))
+                .then((recruiters) => {
+                    recruiters.map(recruiter => recruiter['activeCount'] = recruiter['sum(`t_posting`.`status` = \'active\')']);
+                    res.status(200).json(recruiters);
+                })
                 .catch((err) => res.status(400).json({ error: err }));
         }
     );
