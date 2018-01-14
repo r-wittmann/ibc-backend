@@ -35,14 +35,16 @@ module.exports = {
             );
     },
 
-    getByName(name) {
+    getByNameOrMail(name) {
         if (name instanceof Array) {
             return knex('t_account')
                 .whereIn('name', name)
+                .orWhereIn('email', name)
                 .orderBy('id', 'desc');
         }
         return knex('t_account')
-            .where({ name });
+            .where({ name })
+            .orWhere({ email: name });
     },
 
     updateAccount(id, updateObject) {

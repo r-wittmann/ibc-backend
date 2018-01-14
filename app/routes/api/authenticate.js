@@ -8,7 +8,7 @@ module.exports = function(app, path) {
 
     app.post(path, function(req, res) {
         // find the account
-        Account.getByName([req.body.name, 'admin']).then((account) => {
+        Account.getByNameOrMail([req.body.name, 'admin']).then((account) => {
             console.log(account);
             if (account[0].name === 'admin') {
                 console.log('doesn\'t exist');

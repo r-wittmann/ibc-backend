@@ -11,7 +11,7 @@ module.exports = function(app, path) {
 
     // check, if a username is already taken
     app.post(path + '/check-username', function(req, res) {
-        Account.getByName(req.body.name)
+        Account.getByNameOrMail(req.body.name)
             .then(([account]) => {
                 if (account) {
                     res.status(400).json({ error: 'username already exists' });
@@ -67,7 +67,7 @@ module.exports = function(app, path) {
         let password = crypto.randomBytes(8).toString('hex');
         let hashedPassword = crypto.createHmac('sha512', salt).update(password).digest('hex');
 
-        Account.getByName(req.body.name).then(([account]) => {
+        Account.getByNameOrMail(req.body.name).then(([account]) => {
             let updateObject = {
                 salt: salt,
                 password: hashedPassword

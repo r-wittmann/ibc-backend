@@ -9,7 +9,7 @@ module.exports = function(app, path) {
 
     app.post(path, function(req, res) {
         // find the account
-        Account.getByName(req.body.name).then(([account]) => {
+        Account.getByNameOrMail(req.body.name).then(([account]) => {
             if (!account) {
                 // username doesn't exist
                 res.status(403).json({ error: 'authentication failed. user doesn\'t exist or password is wrong' });
