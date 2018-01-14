@@ -34,7 +34,6 @@ module.exports = function(app, path) {
             name: req.body.name,
             password: password,
             salt: salt,
-            mother_company: req.body.mother_company,
             email: req.body.email,
             company_type: req.body.company_type,
             status: 'registered',
@@ -45,7 +44,7 @@ module.exports = function(app, path) {
             .then(([accountId]) => {
                 let company = {
                     account_id: accountId,
-                    company_name: req.body.mother_company,
+                    company_name: req.body.name,
                     contact_name: req.body.contact_name,
                     contact_email: req.body.contact_email,
                     contact_phone: req.body.contact_phone,

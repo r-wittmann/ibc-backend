@@ -12,7 +12,6 @@ module.exports = {
             .leftJoin('t_company', 't_account.id', 't_company.account_id')
             .select(
                 't_account.id',
-                't_company.company_name',
                 't_account.name',
                 't_account.email',
                 't_company.website',
@@ -32,7 +31,6 @@ module.exports = {
             .select(
                 'name',
                 'email',
-                'mother_company',
                 'company_type'
             );
     },
