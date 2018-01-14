@@ -1,12 +1,13 @@
 # Backend for the IBC job portal
 
 This repository contains the code for the backend server for the IBC job portal prototype. It is developed in line with the requirements of the course Digitale Wirtschaft for the MMT masters program at LMU.
+Frontend can be found [here](https://github.com/r-wittmann/ibc-portal-frontend)
 
 # Getting Starded
 
 As we just need a REST API with a little logic behind it, we decided to use NodeJS with an Express web server.
 
-As database we decided to use mySQL because the backend will be deployed on a Strato web server, which can only run a mySQL database.
+As database we decided to use mySQL because the backend may be deployed on a Strato web server at some point, which can only run a mySQL database.
 For database setup and migration we use knex.js, an open source object relational mapper.
 You need to have a local instance of mySQL running and a database with the name ibc_backend.
 
@@ -15,13 +16,15 @@ Additionally you need to add a knexfile.js to the project (on root level) with t
     module.exports = {
         client: 'mysql',
         connection: {
-            host : 'localhost',
-            database: 'ibc_database',
-            user: {username},
-            password: '{password}'
+            host : process.env.PORT ? 'us-cdbr-iron-east-05.cleardb.net' : 'localhost',
+            port: process.env.PORT ? '3306' : undefined,
+            database: process.env.PORT ? 'ad_da74d66b1833641' : 'ibc_database',
+            user: process.env.PORT ? 'b2584502a454e5' : {username},
+            password: process.env.PORT ? '947d6097' : {password}
         },
-        seeds: {
-            directory: __dirname + '/seeds'
+        pool: {
+            min: 1,
+            max: 4,
         }
     };
 
@@ -44,6 +47,14 @@ frontend interaction.
 
 # Deployment
 
-not implemented yet.
+As the legal situation is not clear yet, we decided to host backend and database on a trial account at [pivotal webservices](http://run.pivotal.io/) using [cloud foundry](https://www.cloudfoundry.org/).
+
+Before you can deploy the application to the cloud, you need to install the cloud foundry command line interface ([How To](http://docs.cloudfoundry.org/cf-cli/install-go-cli.html))
+After you are able to run cf commands in your terminal, you will be able to deploy the application using
+
+    $> npm run deploy
+
+This triggers an upload of the backend code to pivotal webservices where it is installed in a node environment.
+It is accessible at https://ibc-backend.cfapps.io
 
 &copy; 2017 by Lisa Nierhaus, Katrin Hagner, Abdelrahman Youssef and Rainer Wittmann. All rights reserved.
