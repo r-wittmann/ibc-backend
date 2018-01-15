@@ -3,9 +3,6 @@ module.exports =
         // id
         account_id: '',
         company_name: '',
-        contact_name: '',
-        contact_email: '',
-        contact_phone: '',
         munich_address: '',
         locations: null,
         employees: '',
