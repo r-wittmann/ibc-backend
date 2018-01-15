@@ -3,6 +3,7 @@
 
 const Account = include('app/orm/accountMapper');
 const Company = include('app/orm/companyMapper');
+const Recruiter = include('app/orm/recruiterMapper');
 const defaultCompany = include('app/models/defaultCompany');
 const MailService = include('app/mailService');
 const crypto = require('crypto');
@@ -22,7 +23,7 @@ module.exports = function(app, path) {
             .catch((err) => res.status(400).json({ error: err }));
     });
 
-    // register an account (creates an account and a company)
+    // register an account (creates an account, a company and a recruiter)
     app.post(path, function(req, res) {
 
         // as a password is created for the account once an admin accepts the registration,
@@ -34,7 +35,9 @@ module.exports = function(app, path) {
             name: req.body.name,
             password: password,
             salt: salt,
+            contact_name: req.body.contact_name,
             email: req.body.email,
+            contact_phone: req.body.contact_phone,
             company_type: req.body.company_type,
             status: 'registered',
             admin: false
@@ -45,18 +48,30 @@ module.exports = function(app, path) {
                 let company = {
                     account_id: accountId,
                     company_name: req.body.name,
-                    contact_name: req.body.contact_name,
-                    contact_email: req.body.contact_email,
-                    contact_phone: req.body.contact_phone,
                     munich_address: req.body.address,
                     website: req.body.website,
                     company_description: defaultCompany.company_description
                 };
                 Company.createCompany(company)
-                    .then(() => res.status(201).json({ message: 'account created' }))
-                    .then(() => MailService.sendApprovalRequestedMail())
-                    .catch((err) => res.status(409).json({ error: err }))
+                    .catch((err) => res.status(409).json({ error: err }));
+
+                let recruiter = {
+                    account_id: accountId,
+                    recruiter_name: req.body.contact_name,
+                    recruiter_email: req.body.email,
+                    phone: req.body.contact_phone,
+                    mobile: '',
+                    position: 'Recruiter',
+                    location: '',
+                    photo: '',
+                    xing: '',
+                    linked_in: ''
+                };
+                Recruiter.createRecruiter(recruiter)
+                    .catch((err) => res.status(409).json({ error: err }));
             })
+            .then(() => res.status(201).json({ message: 'account created' }))
+            .then(() => MailService.sendApprovalRequestedMail());
 
     });
 

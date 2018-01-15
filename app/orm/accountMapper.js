@@ -13,7 +13,9 @@ module.exports = {
             .select(
                 't_account.id',
                 't_account.name',
+                't_account.contact_name',
                 't_account.email',
+                't_account.contact_phone',
                 't_company.website',
                 't_account.company_type',
                 't_account.status'
@@ -30,7 +32,9 @@ module.exports = {
             .where({ id })
             .select(
                 'name',
+                'contact_name',
                 'email',
+                'contact_phone',
                 'company_type'
             );
     },
