@@ -18,10 +18,14 @@ module.exports = {
                 't_posting.recruiter_id',
                 't_posting.title',
                 't_posting.expiry_date',
+                't_posting.place_of_employment',
                 't_posting.contract_type',
                 't_posting.field_of_employment',
                 't_posting.entry_level',
-                't_company.company_name'
+                't_posting.start_of_employment',
+                't_posting.created_at',
+                't_company.company_name',
+                't_company.logo'
             ).orderBy('t_posting.created_at', 'desc');
     },
 

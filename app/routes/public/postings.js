@@ -29,6 +29,7 @@ module.exports = function(app, path) {
                             postings = postings.filter(posting => filters[key].includes(posting[key]));
                         }
                     }
+                    postings.map(posting => posting.logo = posting.logo ? posting.logo.toString() : null);
                     res.status(200).json(postings);
                 })
                 .catch((err) => res.status(400).json({ error: err }));
