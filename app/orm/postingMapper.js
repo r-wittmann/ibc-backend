@@ -19,6 +19,7 @@ module.exports = {
                 't_posting.title',
                 't_posting.expiry_date',
                 't_posting.contract_type',
+                't_posting.field_of_employment',
                 't_posting.entry_level',
                 't_company.company_name'
             ).orderBy('t_posting.created_at', 'desc');
