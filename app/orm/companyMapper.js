@@ -39,7 +39,7 @@ module.exports = {
                 't_company.company_name'
             )
             .groupBy('t_company.id')
-            .count('t_company.id as totalCount')
+            .countDistinct('t_posting.id as totalCount')
             .sum(knex.raw('?? = ?', ['t_posting.status', 'active']));
     },
 

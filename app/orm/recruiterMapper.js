@@ -24,7 +24,7 @@ module.exports = {
                 't_recruiter.recruiter_name'
             )
             .groupBy('t_recruiter.id')
-            .count('t_recruiter.id as totalCount')
+            .countDistinct('t_posting.id as totalCount')
             .sum(knex.raw('?? = ?', ['t_posting.status', 'active']));
     },
 
