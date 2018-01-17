@@ -129,4 +129,23 @@ module.exports = function(app, path) {
                 .catch((err) => res.status(404).json({ error: err }));
         }
     );
+
+    // get account analytics
+    app.get(path + '/analytics',
+        function(req, res, next) {
+            validateToken(req, res, next, app);
+        },
+        validateAdminToken,
+        function(req, res) {
+            Account.getAnalytics()
+                .then((accounts) => {
+                    // remove the calling admin user
+                    accounts = accounts.filter(account => account.id !== req.decodedToken.id);
+                    // rename active posting count column
+                    accounts.map(company => company['activePostingCount'] = company['sum(`t_posting`.`status` = \'active\')']);
+                    res.status(200).json(accounts);
+                })
+                .catch((err) => res.status(400).json({ error: err }));
+        }
+    );
 };

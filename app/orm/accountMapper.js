@@ -62,5 +62,25 @@ module.exports = {
         return knex('t_account')
             .where({ id })
             .del()
+    },
+
+    getAnalytics() {
+        return knex('t_account')
+            .leftJoin('t_company', 't_account.id', 't_company.account_id')
+            .leftJoin('t_recruiter', 't_account.id', 't_recruiter.account_id')
+            .leftJoin('t_posting', function() {
+                this.on('t_account.id', 't_posting.account_id')
+                    .andOn('t_company.id', 't_posting.company_id')
+                    .andOn('t_recruiter.id', 't_posting.recruiter_id')
+            })
+            .select(
+                't_account.id',
+                't_account.name'
+            )
+            .groupBy('t_account.id')
+            .countDistinct('t_company.id as companyCount')
+            .countDistinct('t_recruiter.id as recruiterCount')
+            .countDistinct('t_posting.id as postingCount')
+            .sum(knex.raw('?? = ?', ['t_posting.status', 'active']));
     }
 };
