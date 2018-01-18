@@ -54,6 +54,7 @@ module.exports = {
                 't_company.munich_address',
                 't_company.field_of_activity',
                 't_recruiter.recruiter_name',
+                't_recruiter.recruiter_email',
                 't_recruiter.photo',
                 't_recruiter.position',
                 't_recruiter.location',
