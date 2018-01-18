@@ -73,6 +73,7 @@ module.exports = {
                     .andOn('t_company.id', 't_posting.company_id')
                     .andOn('t_recruiter.id', 't_posting.recruiter_id')
             })
+            .where('t_account.status', '=', knex.raw('?', ['accepted']))
             .select(
                 't_account.id',
                 't_account.name'
