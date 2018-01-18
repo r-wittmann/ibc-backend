@@ -1,12 +1,48 @@
 // private route to retrieve a list of job postings or a single one by id
 // route: .../api/postings
 
-const Posting = include('app/orm/postingMapper');
 const defaultPosting = include('app/models/defaultPosting');
-
+const mailService = include('app/mailService');
+const Posting = include('app/orm/postingMapper');
 const validateToken = include('app/routes/api/validateToken');
 
 module.exports = function(app, path) {
+
+    let now = new Date();
+    let msPerDay = 24 * 60 * 60 * 1000;
+
+    // calculate the time in ms until 4 am
+    let msTo4Am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 4) - now;
+
+    // if it's after 4 am, calculate the time to 4 am the next day
+    if (msTo4Am < 0) msTo4Am = msPerDay - msTo4Am;
+
+    // set timer to call expired post method at 4 am
+    setTimeout(() => checkForExpiredPostings(), msTo4Am);
+
+    let checkForExpiredPostings = () => {
+        // reset the timer to 4 am the next day
+        setTimeout(() => checkForExpiredPostings(), msPerDay);
+
+        Posting.getAllForExpiredPostingsCheck()
+            .then(postings => {
+                postings.filter(posting => posting.expiry_date)
+                    .forEach(posting => {
+                        if (new Date(posting.expiry_date) - new Date() < 0) {
+                            // if the expiry date of the posting is before the current date:
+                            // update posting status
+                            Posting.updatePosting(posting.id, posting.account_id, { status: 'deactivated', expiry_date: '' })
+                                .then(() => console.log('posting', posting.id , 'updated to status: deactivated'));
+                        } else if (new Date(posting.expiry_date) - new Date() < 7 * msPerDay) {
+                            // if the expiry date is less than seven days away:
+                            // send soon to expire mail
+                            // TODO: how often do we want to send this mail?, each day?, only once?
+                            mailService.sendExpiringPostMail(posting.recruiter_name, posting.recruiter_email, posting.id, posting.title);
+                        }
+                    })
+            });
+    };
+
 
     // create a job posting
     app.post(path,

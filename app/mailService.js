@@ -80,6 +80,24 @@ class MailService {
         });
     }
 
+    static sendExpiringPostMail(name, email, id, title) {
+        let mailOptions = {
+            to: email,
+            subject: 'Posting läuft bald ab',
+            html:  `<div>
+                        <p>Hallo ${name},</p>
+                        <p>Die Stellenanzeige mit dem Titel</p>
+                        <p><a href="https://ibc-job-portal.cfapps.io/company/postings/${id}">${title}</a></p>
+                        <p>läuft in ca. einer Woche ab.</p>
+                        <p>Viele Grüße vom IBC Team</p>
+                    </div>`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log(error);
+        });
+    }
+
 }
 
 module.exports = MailService;
