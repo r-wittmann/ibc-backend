@@ -19,11 +19,11 @@ class MailService {
     static sendApprovalRequestedMail() {
         let mailOptions = {
             to: 'ibc.job.portal@gmail.com',
-            subject: 'A new company has registered',
-            html: '<p>Hi Admin,</p>' +
-            '<p>please log in to your account at <a href="http://localhost:3000/admin/login">http://job-portal.ibc/admin/login</a>' +
-            ' to review the open registrations.</p>' +
-            '<p>Kind Regards</p>'
+            subject: 'Ein neues Unternehmen hat sich registriert',
+            html: '<p>Hallo Admin,</p>' +
+            '<p>bitte melde dich in deinem Account unter <a href="http://localhost:3000/admin/login">http://job-portal.ibc/admin/login</a> an,' +
+            'um neue, offene Registrierungsanfragen zu sehen!</p>' +
+            '<p>Viele Grüße</p>'
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -68,11 +68,12 @@ class MailService {
     static sendNewPasswordMail(email, password) {
         let mailOptions = {
             to: email,
-            subject: 'New password',
-            html: '<p>Hi</p>' +
-            '<p>Your new password for the ibc job platform is:<br>' +
-            password + '</p>' +
-            '<p>Kind Regards</p>'
+            subject: 'Neues Passwort',
+            html: '<p>Hallo,</p>' +
+            '<p>dein neues Passwort für das IBC Job Portal ist:<br>' +
+            password + '.</p>' +
+            '<p>Melde dich unter <a href="http://localhost:3000/company/login">http://job-portal.ibc/company/login</a> an und ändere bitte sofort dein Passwort.'+
+            '<p>Viele Grüße</p>'
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
