@@ -16,15 +16,15 @@ module.exports = function(app, path) {
                     // filter for them on the postings array
                     for (let key in filters) {
                         if (filters.hasOwnProperty(key) && defaultPosting.hasOwnProperty(key)) {
-                            // with a request url of .../postings?company_id=1&company_id=2 the respective query
-                            // parameter is an array of strings, which will not correctly compare to the int of
-                            // the company_id in the postings object. Therefor we must parse them to int. As a
-                            // query for one company_id corresponds to a query parameter of type string we need
-                            // to check that also in the if clause.
-                            // The same issue arises from querying for specific recruiter_ids
-                            if ((key === 'company_id' && filters[key] instanceof Array) ||
-                                key === 'recruiter_id' && filters[key] instanceof Array) {
-                                filters[key] = filters[key].map(e => parseInt(e));
+                            // if the query key is either company_id or recruiter_id (the only two values saved as an int in the database
+                            if (key === 'company_id' || key === 'recruiter_id') {
+                                // if the query contains more than one element, we must parse the strings to ints to allow the comparison
+                                if(filters[key] instanceof Array) {
+                                    filters[key] = filters[key].map(e => parseInt(e));
+                                } else {
+                                    // if the query contains only one element, we must parse the string and wrap it in an array for the comparison
+                                    filters[key] = Array.of(parseInt(filters[key]));
+                                }
                             }
                             postings = postings.filter(posting => filters[key].includes(posting[key]));
                         }
