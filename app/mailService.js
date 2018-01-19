@@ -59,8 +59,8 @@ class MailService {
             html:  `<div>
                         <p>Hallo ${name},</p>
                         <p>Die Stellenanzeige mit dem Titel</p>
-                        <p><a href="https://ibc-job-portal.cfapps.io/company/postings/${id}">${title}</a></p>
-                        <p>läuft in ca. einer Woche ab.</p>
+                        <p>&emsp;<a href="https://ibc-job-portal.cfapps.io/company/postings/${id}">${title}</a></p>
+                        <p>läuft bald ab.</p>
                         <p>Viele Grüße vom IBC Team</p>
                     </div>`,
         };
