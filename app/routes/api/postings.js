@@ -28,15 +28,15 @@ module.exports = function(app, path) {
             .then(postings => {
                 postings.filter(posting => posting.expiry_date)
                     .forEach(posting => {
-                        if (new Date(posting.expiry_date) - new Date() < 0) {
+                        let timeToExpire = new Date(posting.expiry_date) - new Date();
+                        if (timeToExpire < 0) {
                             // if the expiry date of the posting is before the current date:
                             // update posting status
                             Posting.updatePosting(posting.id, posting.account_id, { status: 'deactivated', expiry_date: '' })
                                 .then(() => console.log('posting', posting.id , 'updated to status: deactivated'));
-                        } else if (new Date(posting.expiry_date) - new Date() < 7 * msPerDay) {
-                            // if the expiry date is less than seven days away:
-                            // send soon to expire mail
-                            // TODO: how often do we want to send this mail?, each day?, only once?
+                        } else if (timeToExpire < msPerDay || timeToExpire > 6 * msPerDay && timeToExpire < 7 * msPerDay) {
+                            // send soon to expire mail twice. Once, if the post expires in less than 7 days and once,
+                            // if the posting expires in less than one day to remind them of the posting
                             mailService.sendExpiringPostMail(posting.recruiter_name, posting.recruiter_email, posting.id, posting.title);
                         }
                     })
