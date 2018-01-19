@@ -101,5 +101,20 @@ module.exports = {
         return knex('t_posting')
             .where({ id, account_id })
             .del();
+    },
+
+    getAllForExpiredPostingsCheck() {
+        return knex('t_posting')
+            .leftJoin('t_recruiter', 't_posting.recruiter_id', 't_recruiter.id')
+            .where('status', '=', knex.raw('?', ['active']))
+            .select(
+                't_posting.id',
+                't_posting.account_id',
+                't_posting.status',
+                't_posting.expiry_date',
+                't_posting.title',
+                't_recruiter.recruiter_email',
+                't_recruiter.recruiter_name'
+            )
     }
 };

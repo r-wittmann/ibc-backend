@@ -112,6 +112,11 @@ exports.seed = function(knex) {
                 }
             ]);
         }).then(function() {
+
+            let now = new Date();
+            let dayAfterTomorrow = new Date();
+            dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
             return knex('t_posting').insert([
                 {
                     id: 20,
@@ -130,7 +135,7 @@ exports.seed = function(knex) {
                     pdf: false,
                     status: 'active',
                     description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}",
-                    expiry_date: ''
+                    expiry_date: now.toISOString()
                 },
                 {
                     id: 21,
@@ -149,7 +154,7 @@ exports.seed = function(knex) {
                     pdf: false,
                     status: 'active',
                     description: "{\"entityMap\":{},\"blocks\":[{\"key\":\"1hf1m\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}]}",
-                    expiry_date: ''
+                    expiry_date: dayAfterTomorrow.toISOString()
                 },
                 {
                     id: 22,
