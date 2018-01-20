@@ -33,6 +33,28 @@ class MailService {
     }
 
     // send a mail containing a new password to the accounts email address
+    // used for the  accept registration flow
+    static sendAcceptanceMail(email, password, contact, account) {
+        let mailOptions = {
+            to: email,
+            subject: 'Ihre Registrierung am IBC Job Portal',
+            html:  `<div>
+                        <p>Hallo ${contact},</p>
+                        <p>willkommen im IBC Job Portal. Deine Registrierung wurde akzeptiert. Damit du gleich anfangen kannst
+                            Stellenanzeigen zu erstellen sind hier nochmal deine Anmeldedaten:</p>
+                        <p>Unternehmensname: ${account}<br />
+                            Passwort: ${password}</p>
+                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login?name=${account}">hier</a> an und ändere bitte sofort dein Passwort.
+                        <p>Viele Grüße vom IBC Team</p>
+                    </div>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log(error);
+        });
+    }
+
+    // send a mail containing a new password to the accounts email address
     // used for the forgot password flow and the accept registration flow
     static sendNewPasswordMail(email, password) {
         let mailOptions = {

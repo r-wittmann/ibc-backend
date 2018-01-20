@@ -83,7 +83,7 @@ module.exports = function(app, path) {
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
                         .then(() => res.status(200).json({ message: 'registration accepted' }))
-                        .then(() => MailService.sendNewPasswordMail(account.email, password))
+                        .then(() => MailService.sendAcceptanceMail(account.email, password, account.contact_name, account.name))
                         .catch((err) => res.status(400).json({ error: err }));
                 })
                 .catch((err) => res.status(404).send({ error: err }));
