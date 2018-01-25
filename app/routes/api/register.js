@@ -90,7 +90,7 @@ module.exports = function(app, path) {
 
             Account.updateAccount(account.id, updateObject)
                 .then(() => res.status(200).json({ message: 'new password created' }))
-                .then(() => MailService.sendNewPasswordMail(account.email, password));
+                .then(() => MailService.sendNewPasswordMail(account.email, password, account.contact_name, account.name));
         }).catch(() => res.status(403).json({ error: 'account doesn\'t exist' }));
     })
 };

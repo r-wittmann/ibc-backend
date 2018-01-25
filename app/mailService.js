@@ -43,8 +43,10 @@ class MailService {
                         <p>willkommen im IBC Job Portal. Deine Registrierung wurde akzeptiert. Damit du gleich anfangen kannst
                             Stellenanzeigen zu erstellen sind hier nochmal deine Anmeldedaten:</p>
                         <p>Unternehmensname: ${account}<br />
+                            E-Mail: ${email}<br/>
                             Passwort: ${password}</p>
-                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login?name=${account}">hier</a> an und ändere bitte sofort dein Passwort.
+                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login?name=${account}">hier</a> an und ändere bitte sofort dein Passwort.<br/>
+                            Sowohl Unternehmensname als auch E-Mail-Adresse sind für den Login gültig.</p>
                         <p>Viele Grüße vom IBC Team</p>
                     </div>`
         };
@@ -56,15 +58,18 @@ class MailService {
 
     // send a mail containing a new password to the accounts email address
     // used for the forgot password flow and the accept registration flow
-    static sendNewPasswordMail(email, password) {
+    static sendNewPasswordMail(email, password, contact, account) {
         let mailOptions = {
             to: email,
             subject: 'Neues Passwort',
             html:  `<div>
-                        <p>Hallo,</p>
-                        <p>dein neues Passwort für das IBC Job Portal ist:</p>
-                        <p>&emsp;${password}.</p>
-                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login">hier</a> an und ändere bitte sofort dein Passwort.
+                        <p>Hallo ${contact},</p>
+                        <p>deine Anmeldedaten für das IBC Job Portal sind:</p>
+                        <p>Unternehmensname: ${account}<br/>
+                            E-Mail: ${email}<br/>
+                            Neues Passwort: ${password}.</p>
+                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login">hier</a> an und ändere bitte sofort dein Passwort.<br/>
+                            Sowohl Unternehmensname als auch E-Mail-Adresse sind für den Login gültig.</p>
                         <p>Viele Grüße vom IBC Team</p>
                     </div>`
         };
