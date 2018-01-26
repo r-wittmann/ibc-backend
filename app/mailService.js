@@ -34,7 +34,7 @@ class MailService {
 
     // send a mail containing a new password to the accounts email address
     // used for the  accept registration flow
-    static sendAcceptanceMail(email, password, contact, account) {
+    static sendAcceptanceMail(email, password, token, contact, account) {
         let mailOptions = {
             to: email,
             subject: 'Ihre Registrierung am IBC Job Portal',
@@ -45,7 +45,7 @@ class MailService {
                         <p>Unternehmensname: ${account}<br />
                             E-Mail: ${email}<br/>
                             Passwort: ${password}</p>
-                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/login?name=${account}">hier</a> an und ändere bitte sofort dein Passwort.<br/>
+                        <p>Melde dich <a href="https://ibc-job-portal.cfapps.io/company/profile#token=${token}">hier</a> an und ändere bitte sofort dein Passwort.<br/>
                             Sowohl Unternehmensname als auch E-Mail-Adresse sind für den Login gültig.</p>
                         <p>Viele Grüße vom IBC Team</p>
                     </div>`

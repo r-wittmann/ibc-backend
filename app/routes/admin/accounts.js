@@ -6,6 +6,7 @@ const validateToken = include('app/routes/api/validateToken');
 const validateAdminToken = include('app/routes/admin/validateToken');
 const MailService = include('app/mailService');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 
 module.exports = function(app, path) {
@@ -82,8 +83,16 @@ module.exports = function(app, path) {
             Account.getById(req.params.id)
                 .then(([account]) => {
                     Account.updateAccount(account.id, updateObject)
+                        .then(() => {
+                            let payload = {
+                                id: account.id,
+                                name: account.name,
+                                admin: false
+                            };
+                            let token = jwt.sign(payload, app.get('secret'), { expiresIn: '7d'});
+                            MailService.sendAcceptanceMail(account.email, password, token, account.contact_name, account.name);
+                        })
                         .then(() => res.status(200).json({ message: 'registration accepted' }))
-                        .then(() => MailService.sendAcceptanceMail(account.email, password, account.contact_name, account.name))
                         .catch((err) => res.status(400).json({ error: err }));
                 })
                 .catch((err) => res.status(404).send({ error: err }));
