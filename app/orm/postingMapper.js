@@ -87,7 +87,9 @@ module.exports = {
                 't_posting.entry_level',
                 't_company.company_name',
                 't_recruiter.recruiter_name'
-            ).orderBy('t_posting.created_at', 'desc');
+            )
+            .orderBy('t_posting.status', 'asc')
+            .orderBy('t_posting.expiry_date', 'asc');
     },
 
     updatePosting(id, account_id, updateObject) {
