@@ -16,9 +16,9 @@ const transporter = nodemailer.createTransport({
 class MailService {
 
     // sends a mail to the ibc for every company which tries to register on the platform
-    static sendApprovalRequestedMail() {
+    static sendApprovalRequestedMail(email) {
         let mailOptions = {
-            to: 'ibc.job.portal@gmail.com',
+            to: email,
             subject: 'Ein neues Unternehmen hat sich registriert',
             html:  `<div>
                         <p>Hallo Admin,</p>

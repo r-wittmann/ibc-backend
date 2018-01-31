@@ -70,8 +70,10 @@ module.exports = function(app, path) {
                 Recruiter.createRecruiter(recruiter)
                     .catch((err) => res.status(409).json({ error: err }));
             })
-            .then(() => res.status(201).json({ message: 'account created' }))
-            .then(() => MailService.sendApprovalRequestedMail());
+            .then(() => res.status(201).json({ message: 'account created' }));
+
+        Account.getById(1)
+            .then(([account]) => MailService.sendApprovalRequestedMail(account.email));
 
     });
 
