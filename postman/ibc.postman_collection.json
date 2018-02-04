@@ -854,7 +854,7 @@
 							"raw": "{\n    \"position\": \"HR Direktor\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/25",
+							"raw": "http://localhost:9090/api/postings/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -862,8 +862,8 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"recruiters",
-								"25"
+								"postings",
+								"41"
 							]
 						},
 						"description": ""
@@ -1000,7 +1000,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"recruiter_name\": \"Neuer Recruiter\",\n    \"recruiter_email\": \"neu@sapient.de\",\n    \"phone\": \"00000\",\n    \"mobile\": \"00001\",\n    \"position\": \"HR-Generalist\",\n    \"location\": \"München\",\n    \"photo\": \"\",\n    \"xing\": \"xing.de/recruiter\",\n    \"linked_in\": \"linkedin.de/recruiter\"\n}"
+							"raw": "{\n    \"company_id\": \"1\",\n    \"recruiter_id\": \"1\",\n    \"title\": \"New Posting\",\n    \"start_of_employment\": \"Ab Sofort\",\n    \"contract_type\": \"Werkstudent\",\n    \"contract_duration\": \"12\",\n    \"working_hours\": \"20 h/Woche\",\n    \"entry_level\": \"Studenten\",\n    \"place_of_employment\": \"München\",\n    \"application_link\": \"https://www.application.link\",\n    \"field_of_employment\": \"design\",\n    \"pdf\": false,\n    \"status\": \"deactivated\",\n    \"description\": \"\",\n    \"expiry_date\": \"\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/postings",
@@ -1034,7 +1034,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/postings",
+							"raw": "http://localhost:9090/api/postings/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1042,7 +1042,8 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"postings"
+								"postings",
+								"41"
 							]
 						},
 						"description": ""
@@ -1065,10 +1066,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"New Posting with updated title\"\n}"
+							"raw": "{\n    \"title\": \"New Posting with updated title\"title\": \"New Posting\",\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/25",
+							"raw": "http://localhost:9090/api/postings/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1076,8 +1077,8 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"recruiters",
-								"25"
+								"postings",
+								"41"
 							]
 						},
 						"description": ""
@@ -1103,7 +1104,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/25",
+							"raw": "http://localhost:9090/api/postings/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1111,8 +1112,8 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"recruiters",
-								"25"
+								"postings",
+								"41"
 							]
 						},
 						"description": ""
@@ -1135,7 +1136,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/postings?company_id=1&company_id=2&contract_type=Werkstudent&blub=bla",
+							"raw": "http://localhost:9090/api/postings?company_id=1&company_id=2&contract_type=Werkstudent&status=active&blub=bla",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1159,6 +1160,11 @@
 								{
 									"key": "contract_type",
 									"value": "Werkstudent",
+									"equals": true
+								},
+								{
+									"key": "status",
+									"value": "active",
 									"equals": true
 								},
 								{
