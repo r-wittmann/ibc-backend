@@ -53,6 +53,41 @@
 					"response": []
 				},
 				{
+					"name": "change password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"1\",\n    \"newPassword\": \"2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/account/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"account",
+								"password"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "get all accounts",
 					"request": {
 						"method": "GET",
@@ -102,10 +137,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\"\n}"
+							"raw": "{\n\t\"company_type\": \"startup\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/3/accept",
+							"raw": "http://localhost:9090/admin/accounts/36/accept",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -114,7 +149,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"3",
+								"36",
 								"accept"
 							]
 						},
@@ -138,10 +173,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/4/decline",
+							"raw": "http://localhost:9090/admin/accounts/36/decline",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -150,7 +185,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"4",
+								"36",
 								"decline"
 							]
 						},
@@ -177,7 +212,7 @@
 							"raw": "{\n    \"email\": \"new@email.de\",\n    \"company_type\": \"ngo\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/3",
+							"raw": "http://localhost:9090/admin/accounts/36",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -186,7 +221,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"3"
+								"36"
 							]
 						},
 						"description": ""
@@ -212,7 +247,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:9090/admin/accounts/4",
+							"raw": "http://localhost:9090/admin/accounts/42",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -221,7 +256,7 @@
 							"path": [
 								"admin",
 								"accounts",
-								"4"
+								"42"
 							]
 						},
 						"description": ""
@@ -258,7 +293,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+							"raw": "{\n\t\"name\": \"Sapient\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/authenticate",
@@ -326,7 +361,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"r-wittmann@outlook.de\"\n}"
+							"raw": "{\n    \"email\": \"info-new@sapient-unreal.de\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/account",
@@ -391,7 +426,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"new user\",\n    \"mother_company\": \"mother\",\n    \"email\": \"r-wittmann@gmx.net\",\n    \"company_type\": \"ibc\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"000000\",\n    \"address\": \"address\",\n    \"website\": \"www.mother.de\"\n}"
+							"raw": "{\n\t\"name\": \"new company\",\n    \"email\": \"test@test.test\",\n    \"company_type\": \"ibc\",\n    \"contact_name\": \"Ray\",\n    \"contact_phone\": \"000000\",\n    \"address\": \"address\",\n    \"website\": \"https://www.new-company.de\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/register",
@@ -421,7 +456,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\"\n}"
+							"raw": "{\n\t\"name\": \"Sapient\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/register/forgot",
@@ -470,7 +505,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+							"raw": "{\n\t\"name\": \"Sapient\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/authenticate",
@@ -535,7 +570,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Awesome Company\",\n    \"contact_name\": \"Ray\",\n    \"contact_email\": \"r-wittmann@gmx.net\",\n    \"contact_phone\": \"017683268379\",\n    \"munich_address\": \"Biberger Straße 9a, 82008 Unterhaching\",\n    \"locations\": null,\n    \"employees\": 1,\n    \"website\": \"www.awesome.de\",\n    \"kununu\": null,\n    \"field_of_activity\": \"Media\",\n    \"logo\": null,\n    \"company_description\": \"{\\\"entityMap\\\":{},\\\"blocks\\\":[{\\\"key\\\":\\\"1hf1m\\\",\\\"text\\\":\\\"\\\",\\\"type\\\":\\\"unstyled\\\",\\\"depth\\\":0,\\\"inlineStyleRanges\\\":[],\\\"entityRanges\\\":[],\\\"data\\\":{}}]}\"\n}"
+							"raw": "{\n    \"company_name\": \"Awesome Company\",\n    \"munich_address\": \"Biberger Straße 9a\\n82008 Unterhaching\",\n    \"locations\": null,\n    \"employees\": 1,\n    \"website\": \"www.awesome.de\",\n    \"kununu\": null,\n    \"field_of_activity\": \"Media\",\n    \"logo\": null,\n    \"company_description\": \"{\\\"entityMap\\\":{},\\\"blocks\\\":[{\\\"key\\\":\\\"1hf1m\\\",\\\"text\\\":\\\"\\\",\\\"type\\\":\\\"unstyled\\\",\\\"depth\\\":0,\\\"inlineStyleRanges\\\":[],\\\"entityRanges\\\":[],\\\"data\\\":{}}]}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/companies",
@@ -569,7 +604,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/companies/9",
+							"raw": "http://localhost:9090/api/companies/52",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -578,7 +613,7 @@
 							"path": [
 								"api",
 								"companies",
-								"9"
+								"52"
 							]
 						},
 						"description": ""
@@ -601,10 +636,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"new\",\n    \"contact_name\": \"new\",\n    \"contact_email\": \"new\",\n    \"contact_phone\": \"new\",\n    \"munich_address\": \"new\",\n    \"locations\": null,\n    \"employees\": 2,\n    \"website\": \"new\",\n    \"kununu\": null,\n    \"field_of_activity\": \"new\",\n    \"logo\": null,\n    \"company_description\": \"\"\n}"
+							"raw": "{\n    \"company_name\": \"new\",\n    \"munich_address\": \"new\",\n    \"locations\": null,\n    \"employees\": 2,\n    \"website\": \"new\",\n    \"kununu\": null,\n    \"field_of_activity\": \"new\",\n    \"logo\": null,\n    \"company_description\": \"\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/companies/9",
+							"raw": "http://localhost:9090/api/companies/52",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -613,7 +648,7 @@
 							"path": [
 								"api",
 								"companies",
-								"9"
+								"52"
 							]
 						},
 						"description": ""
@@ -639,7 +674,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/companies/9",
+							"raw": "http://localhost:9090/api/companies/52",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -648,7 +683,7 @@
 							"path": [
 								"api",
 								"companies",
-								"9"
+								"52"
 							]
 						},
 						"description": ""
@@ -685,7 +720,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+							"raw": "{\n\t\"name\": \"Sapient\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/authenticate",
@@ -750,7 +785,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"recruiter_name\": \"Neuer Recruiter\",\n    \"recruiter_email\": \"neu@burda.de\",\n    \"phone\": \"00000\",\n    \"mobile\": \"00001\",\n    \"position\": \"HR-Generalist\",\n    \"location\": \"München\",\n    \"photo\": \"\",\n    \"xing\": \"xing.de/recruiter\",\n    \"linked_in\": \"linkedin.de/recruiter\"\n}"
+							"raw": "{\n    \"recruiter_name\": \"Neuer Recruiter\",\n    \"recruiter_email\": \"neu@sapient.de\",\n    \"phone\": \"00000\",\n    \"mobile\": \"00001\",\n    \"position\": \"HR-Generalist\",\n    \"location\": \"München\",\n    \"photo\": \"\",\n    \"xing\": \"xing.de/recruiter\",\n    \"linked_in\": \"linkedin.de/recruiter\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/recruiters",
@@ -784,7 +819,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/5",
+							"raw": "http://localhost:9090/api/recruiters/25",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -793,7 +828,7 @@
 							"path": [
 								"api",
 								"recruiters",
-								"5"
+								"25"
 							]
 						},
 						"description": ""
@@ -819,7 +854,7 @@
 							"raw": "{\n    \"position\": \"HR Direktor\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/5",
+							"raw": "http://localhost:9090/api/recruiters/25",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -828,7 +863,7 @@
 							"path": [
 								"api",
 								"recruiters",
-								"5"
+								"25"
 							]
 						},
 						"description": ""
@@ -854,7 +889,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/recruiters/1",
+							"raw": "http://localhost:9090/api/recruiters/25",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -863,7 +898,7 @@
 							"path": [
 								"api",
 								"recruiters",
-								"1"
+								"25"
 							]
 						},
 						"description": ""
@@ -900,7 +935,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"user1\",\n    \"password\": \"1\"\n}"
+							"raw": "{\n\t\"name\": \"Sapient\",\n    \"password\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9090/api/authenticate",
@@ -950,6 +985,40 @@
 					"response": []
 				},
 				{
+					"name": "create posting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recruiter_name\": \"Neuer Recruiter\",\n    \"recruiter_email\": \"neu@sapient.de\",\n    \"phone\": \"00000\",\n    \"mobile\": \"00001\",\n    \"position\": \"HR-Generalist\",\n    \"location\": \"München\",\n    \"photo\": \"\",\n    \"xing\": \"xing.de/recruiter\",\n    \"linked_in\": \"linkedin.de/recruiter\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/postings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"postings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "get posting by id",
 					"request": {
 						"method": "GET",
@@ -965,7 +1034,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://localhost:9090/api/postings/1",
+							"raw": "http://localhost:9090/api/postings",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -973,8 +1042,77 @@
 							"port": "9090",
 							"path": [
 								"api",
-								"postings",
-								"1"
+								"postings"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "update posting",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New Posting with updated title\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								"25"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete posting",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-access-token",
+								"value": "{{userToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9090/api/recruiters/25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"api",
+								"recruiters",
+								"25"
 							]
 						},
 						"description": ""
